@@ -1,0 +1,43 @@
+name: CI Pipeline
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    backend-tests:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "18"
+            - name: Install backend dependencies
+              run: npm install
+              working-directory: ./backend
+            - name: Run backend tests
+              run: npm test
+              working-directory: ./backend
+
+    frontend-lint:
+        runs-on: ubuntu-latest
+        needs: backend-tests
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "18"
+            - name: Install frontend dependencies
+              run: npm install
+              working-directory: ./frontend
+            - name: Run frontend lint
+              run: npm run lint
+              working-directory: ./frontend
