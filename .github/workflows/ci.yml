@@ -1,12 +1,12 @@
 name: CI Pipeline
 
-on:
-    push:
-        branches:
-            - main
-    pull_request:
-        branches:
-            - main
+on: workflow_dispatch
+    # push:
+    #     branches:
+    #         - main
+    # pull_request:
+    #     branches:
+    #         - main
 
 jobs:
     backend-tests:
@@ -19,7 +19,7 @@ jobs:
               with:
                   node-version: "18"
             - name: Install backend dependencies
-              run: npm install
+              run: npm ci 
               working-directory: ./backend
             - name: Run backend tests
               run: npm test
@@ -36,7 +36,7 @@ jobs:
               with:
                   node-version: "18"
             - name: Install frontend dependencies
-              run: npm install
+              run: npm ci
               working-directory: ./frontend
             - name: Run frontend lint
               run: npm run lint
