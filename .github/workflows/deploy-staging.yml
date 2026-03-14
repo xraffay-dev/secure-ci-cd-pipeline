@@ -1,5 +1,11 @@
 name: Deploy to Staging
-on: [workflow_dispatch, push]
+on: 
+    workflow_run:
+        workflows: [Build Docker Image]
+        types:
+          - completed
+env:
+    RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 jobs:
     deploy-stage:
         runs-on: ubuntu-latest
@@ -11,6 +17,6 @@ jobs:
             - name: Install Railway CLI
               run: npm install -g @railway/cli
             - name: Authenticate with Railway
-              run: railway login --token ${{ secrets.RAILWAY_TOKEN }}
+              run: railway login --tokenOnly
             - name: Deploy to Staging
               run: railway deploy --image ghcr.io/${{ github.repository }}:${{ github.sha }}
