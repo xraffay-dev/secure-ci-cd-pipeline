@@ -1,6 +1,6 @@
 permissions:
-  contents: read
-  packages: write
+    contents: read
+    packages: write
 
 name: Build Docker Image
 on: workflow_dispatch
@@ -11,8 +11,7 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v3
               with:
-                 sparse-checkout:
-                    backend/
+                  sparse-checkout: backend/
             - name: Log in to GitHub Container Registry
               run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             - name: Build Docker image

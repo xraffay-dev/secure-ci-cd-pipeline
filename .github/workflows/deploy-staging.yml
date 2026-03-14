@@ -1,0 +1,16 @@
+name: Deploy to Staging
+on: workflow_dispatch
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Login to GHCR
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            - name: Pull Docker Image
+              run: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
+            - name: Install Railway CLI
+              run: npm install -g @railway/cli
+            - name: Authenticate with Railway
+              run: railway login --token{{secrets.RAILWAY_TOKEN}}
+            - name: Deploy to Staging
+              run: railway deploy --image ghcr.io/${{ github.repository }}:${{ github.sha }}
