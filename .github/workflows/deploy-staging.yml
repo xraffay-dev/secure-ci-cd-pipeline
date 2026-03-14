@@ -17,6 +17,6 @@ jobs:
             - name: Install Railway CLI
               run: npm install -g @railway/cli
             - name: Authenticate with Railway
-              run: railway login --tokenOnly
+              run: railway login --token $RAILWAY_TOKEN
             - name: Deploy to Staging
               run: railway deploy --image ghcr.io/${{ github.repository }}:${{ github.sha }}
