@@ -18,4 +18,4 @@ jobs:
             - name: Deploy to Staging
               env:
                 RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-              run: railway deploy --service staging
+              run: railway --service staging deploy
