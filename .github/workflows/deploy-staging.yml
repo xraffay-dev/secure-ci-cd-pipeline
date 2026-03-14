@@ -16,22 +16,30 @@ jobs:
         run: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
       - name: Install Railway CLI
         run: npm install -g @railway/cli
-      - name: Resolve Railway token
+      - name: Verify Railway token
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
+        run: |
+          if [ -z "$RAILWAY_TOKEN" ] && [ -z "$RAILWAY_API_TOKEN" ]; then
+            echo "Railway token is missing. Add either RAILWAY_TOKEN or RAILWAY_API_TOKEN to GitHub Actions secrets."
+            exit 1
+          fi
+      - name: Verify Railway auth
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
         run: |
           if [ -n "$RAILWAY_API_TOKEN" ]; then
-            echo "RAILWAY_API_TOKEN=$RAILWAY_API_TOKEN" >> "$GITHUB_ENV"
-            echo "RAILWAY_TOKEN=" >> "$GITHUB_ENV"
-          elif [ -n "$RAILWAY_TOKEN" ]; then
-            echo "RAILWAY_TOKEN=$RAILWAY_TOKEN" >> "$GITHUB_ENV"
-            echo "RAILWAY_API_TOKEN=" >> "$GITHUB_ENV"
-          else
-            echo "Railway token is missing. Add either RAILWAY_TOKEN or RAILWAY_API_TOKEN to GitHub Actions secrets."
-            exit 1
+            unset RAILWAY_TOKEN
           fi
-      - name: Verify Railway auth
-        run: railway whoami
+          railway whoami
       - name: Deploy to Staging
-        run: railway up --service staging --ci
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
+        run: |
+          if [ -n "$RAILWAY_API_TOKEN" ]; then
+            unset RAILWAY_TOKEN
+          fi
+          railway up --service staging --ci
