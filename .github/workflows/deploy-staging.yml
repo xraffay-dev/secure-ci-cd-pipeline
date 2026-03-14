@@ -1,9 +1,10 @@
 name: Deploy to Staging
-on: 
-    workflow_run:
-        workflows: [Build Docker Image]
-        types:
-          - completed
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [Build Docker Image]
+    types:
+      - completed
 env:
     RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 jobs:
