@@ -4,7 +4,6 @@ on:
         workflows: [Build Docker Image]
         types:
           - completed
-
 env:
     RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 jobs:
@@ -17,7 +16,5 @@ jobs:
               run: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
             - name: Install Railway CLI
               run: npm install -g @railway/cli
-            - name: Authenticate with Railway
-              run: railway login $RAILWAY_TOKEN
             - name: Deploy to Staging
               run: railway deploy --image ghcr.io/${{ github.repository }}:${{ github.sha }}
