@@ -3,7 +3,8 @@ permissions:
     packages: write
 
 name: Build Docker Image
-on: workflow_dispatch
+on: [workflow_dispatch, push]
+
 jobs:
     build:
         runs-on: ubuntu-latest

@@ -1,5 +1,5 @@
 name: Deploy to Staging
-on: workflow_dispatch
+on: [workflow_dispatch, push]
 jobs:
     deploy-stage:
         runs-on: ubuntu-latest
