@@ -17,13 +17,13 @@ jobs:
               run: npm install -g @railway/cli
             - name: Verify Railway token
               env:
-                RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+                RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN || secrets.RAILWAY_API_TOKEN }}
               run: |
                 if [ -z "$RAILWAY_TOKEN" ]; then
-                  echo "RAILWAY_TOKEN is not set. Add it to GitHub repository secrets."
+                  echo "Railway token is missing. Add either RAILWAY_TOKEN or RAILWAY_API_TOKEN to GitHub Actions secrets."
                   exit 1
                 fi
             - name: Deploy to Staging
               env:
-                RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+                RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN || secrets.RAILWAY_API_TOKEN }}
               run: railway up --service staging --ci
