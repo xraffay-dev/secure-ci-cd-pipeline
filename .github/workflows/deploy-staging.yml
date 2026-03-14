@@ -15,7 +15,15 @@ jobs:
               run: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
             - name: Install Railway CLI
               run: npm install -g @railway/cli
+            - name: Verify Railway token
+              env:
+                RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+              run: |
+                if [ -z "$RAILWAY_TOKEN" ]; then
+                  echo "RAILWAY_TOKEN is not set. Add it to GitHub repository secrets."
+                  exit 1
+                fi
             - name: Deploy to Staging
               env:
                 RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-              run: railway --service staging deploy
+              run: railway up --service staging --ci
