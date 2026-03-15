@@ -1,45 +1,23 @@
-name: Deploy to Staging
-on:
-  workflow_dispatch:
-  workflow_run:
-    workflows: [Build Docker Image]
-    types:
-      - completed
-jobs:
-  deploy-stage:
-    runs-on: ubuntu-latest
-    environment: staging
-    steps:
-      - name: Login to GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-      - name: Pull Docker Image
-        run: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-      - name: Verify Railway token
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-        run: |
-          if [ -z "$RAILWAY_TOKEN" ] && [ -z "$RAILWAY_API_TOKEN" ]; then
-            echo "Railway token is missing. Add either RAILWAY_TOKEN or RAILWAY_API_TOKEN to GitHub Actions secrets."
-            exit 1
-          fi
-      - name: Verify Railway auth
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-        run: |
-          if [ -n "$RAILWAY_API_TOKEN" ]; then
-            unset RAILWAY_TOKEN
-          fi
-          railway whoami
-      - name: Deploy to Staging
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-        run: |
-          if [ -n "$RAILWAY_API_TOKEN" ]; then
-            unset RAILWAY_TOKEN
-          fi
-          railway up --service staging --ci
+# name: Deploy to Staging
+# on:
+#   workflow_dispatch:
+#   workflow_run:
+#     workflows: [Build Docker Image]
+#     types:
+#       - completed
+# jobs:
+#     deploy-stage:
+#         runs-on: ubuntu-latest
+#         steps:
+#             - name: Login to GHCR
+#               run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+#             - name: Pull Docker Image
+#               run: docker pull ghcr.io/${{ github.repository }}:${{ github.sha }}
+#             - name: Install Fly CLI
+#               run: curl -L https://fly.io/install.sh | sh
+#             - name: Setup Flyctl
+#               uses: superfly/flyctl-actions/setup-flyctl@master
+#             - name: Deploy app
+#               run: flyctl deploy --remote-only
+#               env:
+#                 FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
