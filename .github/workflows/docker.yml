@@ -10,7 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
               with:
                   sparse-checkout: backend/ 
             - name: Build Docker image
@@ -20,10 +20,12 @@ jobs:
             - name: Trivy Image Scan
               uses: aquasecurity/trivy-action@0.20.0
               with:
-                image-ref: ghcr.io/${{ github.repository }}:latest
+                image-ref: ghcr.io/${{ github.repository }}:${{ github.sha }}
+                scan-type: image
                 format: table
                 exit-code: 1
                 severity: CRITICAL,HIGH
+                scanners: vuln
             - name: Tag Docker image
               run: |
                   docker tag ghcr.io/${{ github.repository }}:${{ github.sha }} ghcr.io/${{ github.repository }}:latest
