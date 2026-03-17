@@ -1,0 +1,60 @@
+name: Weekly Security Audit
+
+on:
+  schedule:
+    - cron: "32 2 * * 2" # Every Monday at 9:00 AM
+
+jobs:
+  backend-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: backend/
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "24"
+      
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./backend
+
+      - name: Run Backend Audit
+        run: |
+          npm audit --audit-level=high > backend-audit-results.txt
+          cat backend-audit-results.txt
+          echo "## Backend Security Audit Results" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat backend-audit-results.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+        working-directory: ./backend
+
+  frontend-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: frontend/
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "24"
+      
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./frontend
+
+      - name: Run Frontend Audit
+        run: |
+          npm audit --audit-level=high > frontend-audit-results.txt
+          cat frontend-audit-results.txt
+          echo "## Frontend Security Audit Results" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat frontend-audit-results.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+        working-directory: ./frontend
