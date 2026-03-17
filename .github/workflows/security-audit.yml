@@ -3,7 +3,7 @@ name: Weekly Security Audit
 on:
   workflow_dispatch:
   schedule:
-    - cron: "34 2 * * 2" # Every Monday at 9:00 AM
+    - cron: "0 9 * * 1" # Every Monday at 9:00 AM
 
 jobs:
   backend-audit:
