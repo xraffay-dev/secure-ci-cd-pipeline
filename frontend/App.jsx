@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
-const API = "/api";
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || "").trim().replace(/\/$/, "");
+const API = apiBaseUrl ? `${apiBaseUrl}/api` : "/api";
 
 function sortTakesByVotes(items) {
   return [...items].sort(
