@@ -13,16 +13,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparse-checkout: backend/
-      
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "24"
-      
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{runner.os}}-node-${{hashFiles('**/package-lock.json')}}
       - name: Install dependencies
         run: npm ci
         working-directory: ./backend
-
       - name: Run Backend Audit
         run: |
           npm audit --audit-level=high > backend-audit-results.txt
@@ -40,16 +43,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparse-checkout: frontend/
-      
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "24"
-      
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{runner.os}}-node-${{hashFiles('**/package-lock.json')}}
       - name: Install dependencies
         run: npm ci
         working-directory: ./frontend
-
       - name: Run Frontend Audit
         run: |
           npm audit --audit-level=high > frontend-audit-results.txt
