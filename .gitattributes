@@ -1,5 +1,3 @@
-*.js linguist-detectable=false
-*.ts linguist-detectable=false
-*.tsx linguist-detectable=false
-*.css linguist-detectable=false
-*.html linguist-detectable=false
+*.yml linguist-language=YAML
+*.yaml linguist-language=YAML
+.github/workflows/* linguist-language=YAML
