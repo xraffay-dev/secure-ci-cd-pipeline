@@ -16,7 +16,7 @@ jobs:
       - name: Build Docker image
         run: docker build -t ghcr.io/${{ github.repository }}:${{ github.sha }} backend/
       - name: Trivy Image Scan
-        uses: aquasecurity/trivy-action@0.20.0
+        uses: aquasecurity/trivy-action@0.33.1
         with:
           image-ref: ghcr.io/${{ github.repository }}:${{ github.sha }}
           scan-type: image
