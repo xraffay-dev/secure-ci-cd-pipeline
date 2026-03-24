@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const cors = require("cors");
 
 const app = express();
@@ -136,5 +137,7 @@ if (require.main === module) {
     console.log(`🔥 HotTakes server running on http://localhost:${PORT}`);
   });
 }
+
+app.use(express.static(path.join(__dirname, 'client/dist')))
 
 module.exports = app;
