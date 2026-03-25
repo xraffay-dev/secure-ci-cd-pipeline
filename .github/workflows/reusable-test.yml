@@ -15,7 +15,7 @@ jobs:
             - name: Checkout Code
               uses: actions/checkout@v4
               with:
-                  path: ./backend
+                  sparse-checkout: backend
             - name: Set up Node
               uses: actions/setup-node@v4
               with:
@@ -24,7 +24,7 @@ jobs:
               uses: actions/cache@v4
               with:
                   path: ~/.npm
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  key: ${{ runner.os }}-node-${{ hashFiles('backend/package-lock.json') }}
             - name: Install Backend Dependencies
               run: npm ci
               working-directory: ./backend
@@ -41,7 +41,7 @@ jobs:
             - name: Checkout Code
               uses: actions/checkout@v4
               with:
-                  path: ./frontend
+                  sparse-checkout: frontend
             - name: Set up Node
               uses: actions/setup-node@v4
               with:
@@ -50,7 +50,7 @@ jobs:
               uses: actions/cache@v4
               with:
                   path: ~/.npm
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
             - name: Install Frontend Dependencies
               run: npm ci
               working-directory: ./frontend
