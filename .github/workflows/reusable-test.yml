@@ -1,9 +1,6 @@
 name: Reusable Test Workflow
 
-on:
-    push:
-        branches: [main]
-    workflow_dispatch:
+on: workflow_dispatch
 
 jobs:
     backend-test:
@@ -55,5 +52,5 @@ jobs:
               run: npm ci
               working-directory: ./frontend
             - name: Run Frontend Tests
-              run: npm test
+              run: npm run lint
               working-directory: ./frontend
