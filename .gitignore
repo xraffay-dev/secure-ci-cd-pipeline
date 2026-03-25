@@ -28,6 +28,3 @@ backend/coverage/
 # OS files
 .DS_Store
 Thumbs.db
-
-#Readme files
-README.md
