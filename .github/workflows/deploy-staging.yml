@@ -14,5 +14,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Render Staging Deploy
-        run: |
-          curl -X POST ${{ secrets.RENDER_STAGING_HOOK }}
+        run: curl -X POST ${{ secrets.RENDER_STAGING_HOOK }}

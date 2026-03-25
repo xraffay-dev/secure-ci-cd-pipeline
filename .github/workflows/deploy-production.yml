@@ -13,3 +13,14 @@ jobs:
       - name: Trigger Render Production Deploy
         run: |
           curl -X POST ${{ secrets.RENDER_PRODUCTION_HOOK }}
+      - name: Send Slack Notification
+        if: always() && failure()
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          payload: |
+            {
+              "text": "Build failed: ${{ github.repository }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
