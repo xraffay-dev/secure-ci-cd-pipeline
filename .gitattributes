@@ -1,3 +1,18 @@
-*.yml linguist-language=YAML
-*.yaml linguist-language=YAML
-.github/workflows/* linguist-language=YAML
+# ── Force GitHub Linguist to detect workflow YAML ──────────────────────────
+# .github/ is excluded by Linguist by default — override that
+.github/workflows/*.yml linguist-detectable=true
+.github/workflows/*.yml linguist-language=YAML
+
+# ── Exclude the app code — it's a deployment target, not the project ────────
+# Mark frontend as vendored so JS/CSS/HTML don't appear in language stats
+frontend/**            linguist-vendored=true
+
+# Mark backend app code as vendored (Express server is incidental)
+backend/index.js       linguist-vendored=true
+
+# Keep the Dockerfile visible and detectable
+Dockerfile             linguist-detectable=true
+
+# ── Existing rules (keep) ────────────────────────────────────────────────────
+*.yml                  linguist-language=YAML
+*.yaml                 linguist-language=YAML
