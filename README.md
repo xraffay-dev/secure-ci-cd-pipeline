@@ -1,6 +1,6 @@
 # 🔥 HotTakes — Secure CI/CD Pipeline
 
-> A production-grade CI/CD pipeline built around a lightweight Node.js + React application, demonstrating **real-world DevSecOps practices** with GitHub Actions — automated testing, container security scanning, multi-environment deployments, and scheduled dependency auditing.
+> A production-grade CI/CD pipeline built around a lightweight Node.js + React application, demonstrating **real-world DevSecOps practices** with GitHub Actions — reusable workflows, matrix testing, container security scanning, multi-environment deployments, Slack failure alerting, and scheduled dependency auditing.
 
 ---
 
@@ -20,24 +20,45 @@ This project is a hands-on demonstration of how to wrap any application in a bat
 
 ## 🔄 Workflows — Deep Dive
 
-### 1. `ci.yml` — Continuous Integration
+### 1. `ci.yml` + `reusable-test.yml` — Continuous Integration
 
-**Trigger:** `workflow_dispatch` (designed to also gate `push` and `pull_request` to `main`)
+**Triggers:** `push` to `main`, `pull_request` to `main`, `workflow_dispatch`
 
+`ci.yml` is now a thin **orchestrator** — it contains no test logic itself. Instead it delegates entirely to the reusable workflow:
+
+```yaml
+jobs:
+  tests:
+    uses: ./.github/workflows/reusable-test.yml
 ```
-backend-tests ──► frontend-lint + build
+
+**Why this matters:** The reusable pattern (`workflow_call`) means the same test suite can be invoked by any other workflow in the repo without copy-pasting. It's the GitHub Actions equivalent of a shared library.
+
+---
+
+#### `reusable-test.yml` — The Reusable Test Workflow
+
+**Triggers:** `workflow_call` (invoked by `ci.yml`), `workflow_dispatch` (can also be run standalone)
+
+This is where the actual CI logic lives. Both `backend-test` and `frontend-test` jobs use a **Node.js version matrix**, running the full suite against **two Node versions in parallel**:
+
+```yaml
+strategy:
+  matrix:
+    node-version: [18, 22]
 ```
 
-| Step | Tool | Purpose |
-|------|------|---------|
-| Checkout | `actions/checkout@v3` | Fetch source |
-| Node Setup | `actions/setup-node@v3` | Pin Node 18 |
-| **Dependency Cache** | `actions/cache@v4` | Cache `~/.npm` keyed on `package-lock.json` hash — speeds up repeat runs |
-| Backend Tests | `jest` + `supertest` | 5 integration tests against live Express routes |
-| Frontend Lint | `eslint` (zero warnings) | Enforces code quality with `--max-warnings 0` |
-| Frontend Build | `vite build` | Confirms production bundle compiles clean |
+| Job | What it does |
+|-----|-------------|
+| `backend-test` | Sparse-checks out `backend/` only, installs deps, runs `npm test` (Jest + Supertest) on Node 18 **and** Node 22 simultaneously |
+| `frontend-test` | Sparse-checks out `frontend/` only, installs deps, runs `npm run lint` (ESLint, zero warnings) on Node 18 **and** Node 22 simultaneously |
 
-**Key design decision:** `frontend-lint` has `needs: backend-tests`, enforcing a strict job ordering — backend must be green before frontend CI begins. Fail fast, fail cheap.
+**Key design decisions:**
+
+- **Matrix testing** — catching regressions across Node LTS versions before they hit production. 4 total runner jobs (2 jobs × 2 Node versions) are spawned per CI run.
+- **Sparse checkout per job** — `backend-test` only clones `backend/`, `frontend-test` only clones `frontend/`. Reduces checkout time and avoids downloading irrelevant code.
+- **`actions/setup-node@v4`** — upgraded from v3, uses the modern `node-version` input from the matrix.
+- **Dependency cache** — `actions/cache@v4` keyed separately per `backend/package-lock.json` and `frontend/package-lock.json`.
 
 ---
 
@@ -89,7 +110,7 @@ environment: staging
 
 ---
 
-### 5. `deploy-production.yml` — Tag-Gated Production Deployment
+### 5. `deploy-production.yml` — Tag-Gated Production Deploy + Slack Failure Alert
 
 **Trigger:** `push` on tags matching `v*.*.*`
 
@@ -99,8 +120,23 @@ environment: production
 
 Production deploys are **never automatic on a branch push.** They require an explicit semantic version tag (`git tag v1.2.3 && git push --tags`). This is a deliberate gate — only deliberately released versions reach production.
 
-- GitHub Environment `production` can be further configured with required reviewers, wait timers, or branch restrictions.
-- Same Render webhook pattern as staging, but isolated secret: `secrets.RENDER_PRODUCTION_HOOK`.
+This workflow now has **two jobs**:
+
+```
+deploy ──► notify (only on failure())
+```
+
+| Job | Condition | What it does |
+|-----|-----------|-------------|
+| `deploy` | always | POSTs to `secrets.RENDER_PRODUCTION_HOOK` to trigger Render redeploy |
+| `notify` | `needs: deploy` + `if: failure()` | Sends a **Slack alert** via `secrets.SLACK_WEBHOOK_URL` with repo name and failing tag |
+
+**The Slack notification payload:**
+```json
+{"text": "Deploy failed for <repo> on tag <tag>"}
+```
+
+**Why this matters:** Silent production deploy failures are dangerous. The `notify` job guarantees that if Render rejects the deploy for any reason, the on-call engineer gets pinged immediately on Slack — without needing to poll GitHub Actions manually.
 
 ---
 
@@ -111,7 +147,8 @@ Production deploys are **never automatic on a branch push.** They require an exp
 This workflow runs **independently of any code push** — it audits the current dependency tree weekly to catch newly disclosed CVEs in existing packages.
 
 **Performance optimizations:**
-- **Sparse checkout:** Only clones `backend/` or `frontend/` respectively — not the full repository. Reduces checkout time significantly.
+
+- **Sparse checkout:** Only clones `backend/` or `frontend/` respectively — not the full repository.
 - **Parallel jobs:** `backend-audit` and `frontend-audit` run simultaneously in separate runners.
 - **Dependency cache:** `actions/cache@v4` keyed on `package-lock.json` hash.
 - **`$GITHUB_STEP_SUMMARY`:** Audit results are piped into the workflow summary page, making findings instantly visible in the GitHub UI without digging through raw logs.
@@ -157,7 +194,7 @@ The single `EXPOSE 8000` and `CMD ["node", "index.js"]` keep the runtime surface
 
 ## 🧪 Testing
 
-Backend integration tests use **Jest** and **Supertest**, mounting the Express app directly without spinning up an actual HTTP server:
+Backend integration tests use **Jest** and **Supertest**, mounting the Express app directly without spinning up an actual HTTP server. Tests run across a **Node 18 × Node 22 matrix** in CI:
 
 | Test | Validates |
 |------|-----------|
@@ -178,6 +215,7 @@ Tests are validated in CI before any Docker build is triggered, ensuring no brok
 | `GITHUB_TOKEN` | Auto-provisioned by GitHub | GHCR login in `docker.yml`, CodeQL in `codeql.yml` |
 | `RENDER_STAGING_HOOK` | GitHub Environment: `staging` | `deploy-staging.yml` |
 | `RENDER_PRODUCTION_HOOK` | GitHub Environment: `production` | `deploy-production.yml` |
+| `SLACK_WEBHOOK_URL` | Repository secret | `deploy-production.yml` — failure alert |
 
 **Zero static credentials** are stored anywhere in the repository. GitHub's OIDC token handles registry authentication. Environment-scoped secrets ensure production credentials are never accessible to staging jobs.
 
@@ -189,11 +227,12 @@ Tests are validated in CI before any Docker build is triggered, ensuring no brok
 secure-ci-cd-pipeline/
 ├── .github/
 │   └── workflows/
-│       ├── ci.yml                  # Test + Lint + Build gate
+│       ├── ci.yml                  # Orchestrator — delegates to reusable-test.yml
+│       ├── reusable-test.yml       # Matrix test runner (Node 18 + 22, sparse checkout)
 │       ├── docker.yml              # Build → Trivy scan → Push to GHCR
 │       ├── codeql.yml              # SAST on pull requests
 │       ├── deploy-staging.yml      # Auto-deploy staging on Docker build
-│       ├── deploy-production.yml   # Tag-gated production deploy
+│       ├── deploy-production.yml   # Tag-gated production deploy + Slack failure alert
 │       └── security-audit.yml      # Weekly scheduled npm audit
 ├── backend/
 │   ├── __tests__/
@@ -205,6 +244,8 @@ secure-ci-cd-pipeline/
 │   ├── vite.config.js              # Dev proxy config
 │   ├── .env.example                # Documented env vars
 │   └── package.json
+├── docs/
+│   └── cicd-architecture.svg       # Architecture diagram
 ├── Dockerfile                      # 3-stage multi-stage build
 └── .gitignore
 ```
@@ -216,12 +257,15 @@ secure-ci-cd-pipeline/
 | Layer | Technology |
 |-------|-----------|
 | **CI/CD** | GitHub Actions |
+| **Reusable Workflows** | `workflow_call` — shared test logic across workflows |
+| **Matrix Testing** | Node.js 18 + 22 tested in parallel |
 | **Container Registry** | GitHub Container Registry (GHCR) |
 | **Container Security** | Trivy (`aquasecurity/trivy-action`) |
 | **SAST** | GitHub CodeQL |
 | **Dependency Auditing** | `npm audit` |
 | **Containerization** | Docker (multi-stage build) |
 | **Hosting / CD Target** | Render (webhook-triggered deploys) |
+| **Alerting** | Slack (Incoming Webhooks — production failure notifications) |
 | **Backend** | Node.js 20 + Express 4 |
 | **Frontend** | React 18 + Vite 8 |
 | **Testing** | Jest + Supertest |
@@ -230,16 +274,19 @@ secure-ci-cd-pipeline/
 
 ## 🧠 DevSecOps Concepts Demonstrated
 
+- **Reusable Workflows** — `workflow_call` decouples test logic from trigger logic; DRY principle applied to CI
+- **Matrix Testing** — simultaneous runs across Node 18 and Node 22 catch version-specific regressions automatically
 - **Shift-Left Security** — vulnerabilities caught at build/PR time, not in production
 - **Image Immutability** — every push tagged with `github.sha`; `:latest` is always traceable
 - **Principle of Least Privilege** — workflow permissions scoped to exactly what each job needs
 - **Environment Isolation** — staging and production are separate GitHub Environments with separate secrets
 - **Scheduled Proactive Scanning** — CVE discovery doesn't wait for a code change
-- **Sparse Checkout** — minimize clone scope for faster, resource-efficient runners
+- **Sparse Checkout** — minimise clone scope per job for faster, resource-efficient runners
 - **Dependency Caching** — `actions/cache@v4` keyed on lock file hash for deterministic cache invalidation
 - **Hard Security Gates** — `exit-code: 1` on Trivy means the registry only ever receives clean images
 - **SAST via Data-Flow Analysis** — CodeQL understands taint tracking, not just pattern matching
 - **Tag-Based Production Promotion** — Git tags as the release mechanism removes accidental deploys
+- **Failure Alerting** — Slack webhook on production deploy failure; no silent outages
 
 ---
 
