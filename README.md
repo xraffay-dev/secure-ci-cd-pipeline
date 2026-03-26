@@ -49,7 +49,7 @@ strategy:
 ```
 
 | Job | What it does |
-|-----|-------------|
+| --- | --- |
 | `backend-test` | Sparse-checks out `backend/` only, installs deps, runs `npm test` (Jest + Supertest) on Node 18 **and** Node 22 simultaneously |
 | `frontend-test` | Sparse-checks out `frontend/` only, installs deps, runs `npm run lint` (ESLint, zero warnings) on Node 18 **and** Node 22 simultaneously |
 
@@ -69,7 +69,7 @@ strategy:
 **Permissions:** `contents: read`, `packages: write` — principle of least privilege to GHCR.
 
 | Step | Detail |
-|------|--------|
+| --- | --- |
 | Build | `docker build` tagged with `github.sha` for immutable traceability |
 | **Trivy Scan** | `aquasecurity/trivy-action@v0.35.0` — scans the built image for OS + library CVEs at `CRITICAL` and `HIGH` severity. `exit-code: 1` means the pipeline **hard-fails and refuses to push** a vulnerable image |
 | GHCR Login | Token-based login via `secrets.GITHUB_TOKEN` — no static credentials stored |
@@ -84,6 +84,7 @@ strategy:
 **Trigger:** `pull_request` to `main`
 
 **Permissions:**
+
 ```yaml
 actions: read
 contents: read
@@ -122,16 +123,17 @@ Production deploys are **never automatic on a branch push.** They require an exp
 
 This workflow now has **two jobs**:
 
-```
+```text
 deploy ──► notify (only on failure())
 ```
 
 | Job | Condition | What it does |
-|-----|-----------|-------------|
+| --- | --- | --- |
 | `deploy` | always | POSTs to `secrets.RENDER_PRODUCTION_HOOK` to trigger Render redeploy |
 | `notify` | `needs: deploy` + `if: failure()` | Sends a **Slack alert** via `secrets.SLACK_WEBHOOK_URL` with repo name and failing tag |
 
 **The Slack notification payload:**
+
 ```json
 {"text": "Deploy failed for <repo> on tag <tag>"}
 ```
@@ -164,7 +166,7 @@ cat *-audit-results.txt >> $GITHUB_STEP_SUMMARY
 
 The Dockerfile uses a **3-stage multi-stage build** to produce a minimal, hardened runtime image:
 
-```
+```text
 Stage 1: frontend-build (node:20-alpine)
   └── npm ci + vite build → produces /dist
 
@@ -181,7 +183,7 @@ Stage 3: runtime (node:20-alpine)  ← Final image
 **Security choices made deliberately:**
 
 | Decision | Reason |
-|----------|--------|
+| --- | --- |
 | `node:20-alpine` runtime base | Minimal attack surface — Alpine has far fewer OS packages than `node:20` (Debian) |
 | `npm prune --omit=dev` | Strips all devDependencies — Jest, Supertest, etc. never land in the image |
 | Remove `npm`, `npx`, `corepack` | An attacker with RCE cannot run `npm install` inside the container |
@@ -197,7 +199,7 @@ The single `EXPOSE 8000` and `CMD ["node", "index.js"]` keep the runtime surface
 Backend integration tests use **Jest** and **Supertest**, mounting the Express app directly without spinning up an actual HTTP server. Tests run across a **Node 18 × Node 22 matrix** in CI:
 
 | Test | Validates |
-|------|-----------|
+| --- | --- |
 | `GET /api/takes` | Returns 200, array is sorted descending by votes |
 | `POST /api/takes` | Creates take, returns 201 + correct body |
 | `POST /api/takes` (short text) | Rejects with 400 and error message |
@@ -211,7 +213,7 @@ Tests are validated in CI before any Docker build is triggered, ensuring no brok
 ## 🔐 Secrets & Credentials Management
 
 | Secret | Scope | Used In |
-|--------|-------|---------|
+| --- | --- | --- |
 | `GITHUB_TOKEN` | Auto-provisioned by GitHub | GHCR login in `docker.yml`, CodeQL in `codeql.yml` |
 | `RENDER_STAGING_HOOK` | GitHub Environment: `staging` | `deploy-staging.yml` |
 | `RENDER_PRODUCTION_HOOK` | GitHub Environment: `production` | `deploy-production.yml` |
@@ -223,7 +225,7 @@ Tests are validated in CI before any Docker build is triggered, ensuring no brok
 
 ## 🗂️ Repository Structure
 
-```
+```text
 secure-ci-cd-pipeline/
 ├── .github/
 │   └── workflows/
@@ -255,7 +257,7 @@ secure-ci-cd-pipeline/
 ## ⚙️ Tech Stack
 
 | Layer | Technology |
-|-------|-----------|
+| --- | --- |
 | **CI/CD** | GitHub Actions |
 | **Reusable Workflows** | `workflow_call` — shared test logic across workflows |
 | **Matrix Testing** | Node.js 18 + 22 tested in parallel |
