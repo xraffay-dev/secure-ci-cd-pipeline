@@ -5,6 +5,16 @@
       <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"
         stroke-linecap="round" stroke-linejoin="round" />
     </marker>
+    <style>
+      .flow {
+        stroke-dasharray: 6 6;
+        animation: flow 1.5s linear infinite;
+      }
+      @keyframes flow {
+        from { stroke-dashoffset: 0; }
+        to   { stroke-dashoffset: -12; }
+      }
+    </style>
   </defs>
 
   <!-- Background -->
@@ -59,7 +69,7 @@
 
   <!-- Arrow CI → Docker -->
   <line x1="326" y1="116" x2="326" y2="128" marker-end="url(#arr)"
-    style="stroke:rgb(140,138,130);stroke-width:1.5" />
+    class="flow" style="stroke:rgb(140,138,130);stroke-width:1.5" />
 
   <!-- Phase 2 · Docker build (purple) -->
   <g>
@@ -75,7 +85,7 @@
 
   <!-- Arrow Docker → Trivy -->
   <line x1="326" y1="178" x2="326" y2="190" marker-end="url(#arr)"
-    style="stroke:rgb(140,138,130);stroke-width:1.5" />
+    class="flow" style="stroke:rgb(140,138,130);stroke-width:1.5" />
 
   <!-- Trivy CVE scan (amber) -->
   <g>
@@ -91,7 +101,7 @@
 
   <!-- Arrow Trivy → GHCR -->
   <line x1="326" y1="240" x2="326" y2="252" marker-end="url(#arr)"
-    style="stroke:rgb(140,138,130);stroke-width:1.5" />
+    class="flow" style="stroke:rgb(140,138,130);stroke-width:1.5" />
 
   <!-- Push to GHCR (purple) -->
   <g>
@@ -107,7 +117,7 @@
 
   <!-- Arrow GHCR → Staging with auto-trigger label -->
   <line x1="326" y1="302" x2="326" y2="326" marker-end="url(#arr)"
-    style="stroke:rgb(50,120,210);stroke-width:1.5" />
+    class="flow" style="stroke:rgb(50,120,210);stroke-width:1.5" />
   <text x="334" y="316"
     style="fill:rgb(30,100,190);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:10px">auto-triggers
     ↓</text>
@@ -156,7 +166,7 @@
 
   <!-- Arrow gate → deploy prod -->
   <line x1="326" y1="480" x2="326" y2="492" marker-end="url(#arr)"
-    style="stroke:rgb(140,138,130);stroke-width:1.5" />
+    class="flow" style="stroke:rgb(140,138,130);stroke-width:1.5" />
 
   <!-- Deploy Production (coral) -->
   <g>
@@ -172,7 +182,7 @@
 
   <!-- Arrow deploy → slack -->
   <line x1="326" y1="538" x2="326" y2="550" marker-end="url(#arr)"
-    style="stroke:rgb(140,138,130);stroke-width:1.5" />
+    class="flow" style="stroke:rgb(140,138,130);stroke-width:1.5" />
 
   <!-- Slack failure alert (violet) -->
   <g>

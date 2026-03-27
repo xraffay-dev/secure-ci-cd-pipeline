@@ -1,0 +1,894 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+  body {
+    margin: 0;
+    background: #0d1117;
+  }
+
+  /* 🔥 FLOWING ARROW EFFECT */
+  .flow {
+    stroke-dasharray: 6 6;
+    animation: flow 1.5s linear infinite;
+  }
+
+  @keyframes flow {
+    from {
+      stroke-dashoffset: 0;
+    }
+    to {
+      stroke-dashoffset: -12;
+    }
+  }
+</style>
+    </style>
+  </head>
+  <body>
+    <svg
+      viewBox="0 0 720 670"
+      xmlns="http://www.w3.org/2000/svg"
+      style="
+        width: 100%;
+        max-width: 615px;
+        height: auto;
+        display: block;
+        margin: auto;
+      "
+    >
+      <rect x="0" y="0" width="100%" height="100%" fill="#0d1117" />
+      <defs>
+        <marker
+          id="arr"
+          viewBox="0 0 10 10"
+          refX="8"
+          refY="5"
+          markerWidth="6"
+          markerHeight="6"
+          orient="auto-start-reverse"
+        >
+          <path
+            d="M2 1L8 5L2 9"
+            fill="none"
+            stroke="context-stroke"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </marker>
+      </defs>
+
+      <!-- No background — fully transparent -->
+
+      <!-- ── LEFT TRIGGER ANNOTATIONS ── -->
+      <text
+        x="10"
+        y="89"
+        dominant-baseline="central"
+        style="
+          fill: rgb(194, 192, 182);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 12px;
+        "
+      >
+        → push / PR to main
+      </text>
+      <line
+        x1="164"
+        y1="89"
+        x2="182"
+        y2="89"
+        stroke="rgb(156,154,146)"
+        stroke-width="0.5"
+        stroke-dasharray="2 2"
+      />
+      <text
+        x="10"
+        y="159"
+        dominant-baseline="central"
+        style="
+          fill: rgb(194, 192, 182);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 12px;
+        "
+      >
+        → push / PR to main
+      </text>
+      <line
+        x1="164"
+        y1="159"
+        x2="182"
+        y2="159"
+        stroke="rgb(156,154,146)"
+        stroke-width="0.5"
+        stroke-dasharray="2 2"
+      />
+
+      <text
+        x="10"
+        y="352"
+        dominant-baseline="central"
+        style="
+          fill: rgb(133, 183, 235);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 12px;
+        "
+      >
+        <tspan x="10" dy="0">→ auto: Build Docker Image</tspan>
+        <tspan x="24" dy="16">Completed in Success ✓</tspan>
+      </text>
+
+      <line
+        x1="164"
+        y1="352"
+        x2="182"
+        y2="352"
+        stroke="rgb(133,183,235)"
+        stroke-width="0.5"
+        stroke-dasharray="2 2"
+      />
+
+      <text
+        x="10"
+        y="452"
+        dominant-baseline="central"
+        style="
+          fill: rgb(194, 192, 182);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 12px;
+        "
+      >
+        → push tag v*.*.*
+      </text>
+      <line
+        x1="142"
+        y1="452"
+        x2="182"
+        y2="452"
+        stroke="rgb(156,154,146)"
+        stroke-width="0.5"
+        stroke-dasharray="2 2"
+      />
+
+      <!-- ── SECURITY COLUMN HEADER ── -->
+      <text
+        x="584"
+        y="50"
+        text-anchor="middle"
+        style="
+          fill: rgb(194, 192, 182);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 12px;
+        "
+      >
+        Security gates
+      </text>
+
+      <!-- ══════════════ MAIN FLOW ══════════════ -->
+
+      <!-- Phase 1 · CI (teal) -->
+      <g>
+        <rect
+          x="185"
+          y="62"
+          width="282"
+          height="52"
+          rx="8"
+          fill="rgb(8,80,65)"
+          stroke="rgb(93,202,165)"
+          stroke-width="0.5"
+        />
+        <text
+          x="326"
+          y="81"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(159, 225, 203);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+          "
+        >
+          Lint + test
+        </text>
+        <text
+          x="326"
+          y="101"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(93, 202, 165);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 11px;
+          "
+        >
+          Node 18 &amp; 22 matrix · Jest · ESLint
+        </text>
+      </g>
+
+      <!-- Arrow CI → Docker -->
+      <line
+        x1="326"
+        y1="116"
+        x2="326"
+        y2="128"
+        marker-end="url(#arr)"
+        class="flow"
+        style="stroke: rgb(156, 154, 146); stroke-width: 1.5"
+      />
+
+      <!-- Phase 2 · Docker build (purple) -->
+      <g>
+        <rect
+          x="185"
+          y="130"
+          width="282"
+          height="46"
+          rx="8"
+          fill="rgb(60,52,137)"
+          stroke="rgb(175,169,236)"
+          stroke-width="0.5"
+        />
+        <text
+          x="326"
+          y="148"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(206, 203, 246);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+          "
+        >
+          Build Docker Image
+        </text>
+        <text
+          x="326"
+          y="166"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(175, 169, 236);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 11px;
+          "
+        >
+          3-stage build · node:20-alpine
+        </text>
+      </g>
+
+      <!-- Arrow Docker → Trivy -->
+      <line
+        x1="326"
+        y1="178"
+        x2="326"
+        y2="190"
+        marker-end="url(#arr)"
+        class="flow"
+        style="stroke: rgb(156, 154, 146); stroke-width: 1.5"
+      />
+
+      <!-- Trivy CVE scan (amber) -->
+      <g>
+        <rect
+          x="185"
+          y="192"
+          width="282"
+          height="46"
+          rx="8"
+          fill="rgb(99,56,6)"
+          stroke="rgb(239,159,39)"
+          stroke-width="0.5"
+        />
+        <text
+          x="326"
+          y="210"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(250, 199, 117);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+          "
+        >
+          Trivy CVE scan
+        </text>
+        <text
+          x="326"
+          y="228"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(239, 159, 39);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 11px;
+          "
+        >
+          fail on CRITICAL / HIGH · blocks push
+        </text>
+      </g>
+
+      <!-- Arrow Trivy → GHCR -->
+      <line
+        x1="326"
+        y1="240"
+        x2="326"
+        y2="252"
+        marker-end="url(#arr)"
+        class="flow"
+        style="stroke: rgb(156, 154, 146); stroke-width: 1.5"
+      />
+
+      <!-- Push to GHCR (purple) -->
+      <g>
+        <rect
+          x="185"
+          y="254"
+          width="282"
+          height="46"
+          rx="8"
+          fill="rgb(60,52,137)"
+          stroke="rgb(175,169,236)"
+          stroke-width="0.5"
+        />
+        <text
+          x="326"
+          y="272"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(206, 203, 246);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+          "
+        >
+          Push image to GHCR
+        </text>
+        <text
+          x="326"
+          y="290"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(175, 169, 236);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 11px;
+          "
+        >
+          tagged :sha + :latest · GITHUB_TOKEN
+        </text>
+      </g>
+
+      <!-- Arrow GHCR → Staging with auto-trigger label -->
+      <line
+        x1="326"
+        y1="302"
+        x2="326"
+        y2="326"
+        marker-end="url(#arr)"
+        class="flow"
+        style="stroke: rgb(133, 183, 235); stroke-width: 1.5"
+      />
+      <text
+        x="334"
+        y="316"
+        style="
+          fill: rgb(133, 183, 235);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 10px;
+        "
+      >
+        auto-triggers ↓
+      </text>
+
+      <!-- Staging environment container -->
+      <rect
+        x="171"
+        y="328"
+        width="310"
+        height="62"
+        rx="10"
+        fill="none"
+        stroke="rgb(70,130,213)"
+        stroke-dasharray="5 4"
+        stroke-width="0.5"
+      />
+      <text
+        x="183"
+        y="342"
+        style="
+          fill: rgb(194, 192, 182);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 11px;
+        "
+      >
+        Staging environment
+      </text>
+
+      <!-- Deploy Staging (blue) -->
+      <g>
+        <rect
+          x="185"
+          y="348"
+          width="282"
+          height="36"
+          rx="8"
+          fill="rgb(12,68,124)"
+          stroke="rgb(133,183,235)"
+          stroke-width="0.5"
+        />
+        <text
+          x="326"
+          y="361"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(181, 212, 244);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+          "
+        >
+          Deploy to Staging
+        </text>
+        <text
+          x="326"
+          y="376"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(133, 183, 235);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 11px;
+          "
+        >
+          auto · Render staging hook
+        </text>
+      </g>
+
+      <!-- Dashed gap staging → production -->
+      <line
+        x1="326"
+        y1="392"
+        x2="326"
+        y2="414"
+        stroke="rgb(156,154,146)"
+        stroke-width="0.5"
+        stroke-dasharray="3 3"
+      />
+
+      <!-- Production environment container -->
+      <rect
+        x="171"
+        y="416"
+        width="310"
+        height="198"
+        rx="10"
+        fill="none"
+        stroke="rgb(205,92,88)"
+        stroke-dasharray="5 4"
+        stroke-width="0.5"
+      />
+      <text
+        x="183"
+        y="430"
+        style="
+          fill: rgb(194, 192, 182);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 11px;
+        "
+      >
+        Production environment
+      </text>
+
+      <!-- Tag gate (gray) -->
+      <g>
+        <rect
+          x="185"
+          y="436"
+          width="282"
+          height="42"
+          rx="8"
+          fill="rgb(68,68,65)"
+          stroke="rgb(180,178,169)"
+          stroke-width="0.5"
+        />
+        <text
+          x="326"
+          y="452"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(211, 209, 199);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+          "
+        >
+          Tag gate
+        </text>
+        <text
+          x="326"
+          y="469"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(180, 178, 169);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 11px;
+          "
+        >
+          v*.*.* tag · env: production
+        </text>
+      </g>
+
+      <!-- Arrow gate → deploy prod -->
+      <line
+        x1="326"
+        y1="480"
+        x2="326"
+        y2="492"
+        marker-end="url(#arr)"
+        class="flow"
+        style="stroke: rgb(156, 154, 146); stroke-width: 1.5"
+      />
+
+      <!-- Deploy Production (coral) -->
+      <g>
+        <rect
+          x="185"
+          y="494"
+          width="282"
+          height="42"
+          rx="8"
+          fill="rgb(113,43,19)"
+          stroke="rgb(240,153,123)"
+          stroke-width="0.5"
+        />
+        <text
+          x="326"
+          y="510"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(245, 196, 179);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+          "
+        >
+          Deploy to Production
+        </text>
+        <text
+          x="326"
+          y="527"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(240, 153, 123);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 11px;
+          "
+        >
+          Render hook · same image promoted
+        </text>
+      </g>
+
+      <!-- Arrow deploy → slack -->
+      <line
+        x1="326"
+        y1="538"
+        x2="326"
+        y2="550"
+        marker-end="url(#arr)"
+        class="flow"
+        style="stroke: rgb(156, 154, 146); stroke-width: 1.5"
+      />
+
+      <!-- Slack failure alert (violet) -->
+      <g>
+        <rect
+          x="185"
+          y="552"
+          width="282"
+          height="42"
+          rx="8"
+          fill="rgb(55,30,75)"
+          stroke="rgb(170,120,220)"
+          stroke-width="0.5"
+        />
+        <text
+          x="326"
+          y="568"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(210, 172, 245);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+          "
+        >
+          Slack failure alert
+        </text>
+        <text
+          x="326"
+          y="585"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(170, 120, 220);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 11px;
+          "
+        >
+          notify job · if: failure()
+        </text>
+      </g>
+
+      <!-- ══════════════ SECURITY COLUMN ══════════════ -->
+
+      <!-- CodeQL (amber) -->
+      <g>
+        <rect
+          x="490"
+          y="62"
+          width="194"
+          height="46"
+          rx="8"
+          fill="rgb(99,56,6)"
+          stroke="rgb(239,159,39)"
+          stroke-width="0.5"
+        />
+        <text
+          x="587"
+          y="80"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(250, 199, 117);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+          "
+        >
+          CodeQL analysis
+        </text>
+        <text
+          x="587"
+          y="98"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(239, 159, 39);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 11px;
+          "
+        >
+          SAST · JS · on: pull_request
+        </text>
+      </g>
+
+      <!-- npm audit (amber) -->
+      <g>
+        <rect
+          x="490"
+          y="130"
+          width="194"
+          height="46"
+          rx="8"
+          fill="rgb(99,56,6)"
+          stroke="rgb(239,159,39)"
+          stroke-width="0.5"
+        />
+        <text
+          x="587"
+          y="148"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(250, 199, 117);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+          "
+        >
+          npm audit
+        </text>
+        <text
+          x="587"
+          y="166"
+          text-anchor="middle"
+          dominant-baseline="central"
+          style="
+            fill: rgb(239, 159, 39);
+            font-family:
+              -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+              sans-serif;
+            font-size: 11px;
+          "
+        >
+          on: schedule · every Monday 9:00 AM
+        </text>
+      </g>
+
+      <!-- Dashed connectors -->
+      <line
+        x1="469"
+        y1="89"
+        x2="488"
+        y2="85"
+        stroke="rgb(156,154,146)"
+        stroke-width="0.5"
+        stroke-dasharray="3 3"
+      />
+      <line
+        x1="469"
+        y1="159"
+        x2="488"
+        y2="155"
+        stroke="rgb(156,154,146)"
+        stroke-width="0.5"
+        stroke-dasharray="3 3"
+      />
+
+      <!-- ══════════════ LEGEND ══════════════ -->
+      <rect x="30" y="626" width="12" height="12" rx="2" fill="#1D9E75" />
+      <text
+        x="48"
+        y="632"
+        dominant-baseline="central"
+        style="
+          fill: rgb(194, 192, 182);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 12px;
+        "
+      >
+        Phase 1 · CI checks
+      </text>
+
+      <rect x="192" y="626" width="12" height="12" rx="2" fill="#7F77DD" />
+      <text
+        x="210"
+        y="632"
+        dominant-baseline="central"
+        style="
+          fill: rgb(194, 192, 182);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 12px;
+        "
+      >
+        Phase 2 · Docker &amp; registry
+      </text>
+
+      <rect x="390" y="626" width="12" height="12" rx="2" fill="#BA7517" />
+      <text
+        x="408"
+        y="632"
+        dominant-baseline="central"
+        style="
+          fill: rgb(194, 192, 182);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 12px;
+        "
+      >
+        Security gates
+      </text>
+
+      <rect x="30" y="648" width="12" height="12" rx="2" fill="#378ADD" />
+      <text
+        x="48"
+        y="654"
+        dominant-baseline="central"
+        style="
+          fill: rgb(194, 192, 182);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 12px;
+        "
+      >
+        Phase 3 · Staging env
+      </text>
+
+      <rect x="210" y="648" width="12" height="12" rx="2" fill="#D85A30" />
+      <text
+        x="228"
+        y="654"
+        dominant-baseline="central"
+        style="
+          fill: rgb(194, 192, 182);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 12px;
+        "
+      >
+        Phase 3 · Production env
+      </text>
+
+      <rect x="395" y="648" width="12" height="12" rx="2" fill="#888780" />
+      <text
+        x="413"
+        y="654"
+        dominant-baseline="central"
+        style="
+          fill: rgb(194, 192, 182);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 12px;
+        "
+      >
+        Gate / tag step
+      </text>
+
+      <rect x="512" y="648" width="12" height="12" rx="2" fill="#8B3FC0" />
+      <text
+        x="530"
+        y="654"
+        dominant-baseline="central"
+        style="
+          fill: rgb(194, 192, 182);
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;
+          font-size: 12px;
+        "
+      >
+        Alerting
+      </text>
+    </svg>
+  </body>
+</html>
+
+
