@@ -1,24 +1,24 @@
-# ── Force GitHub Linguist to count workflow YAML ─────────────────────────────
-# .github/ is silently excluded by Linguist by default — force it back in
-.github/workflows/*.yml linguist-detectable=true
-.github/workflows/*.yml linguist-language=YAML
+# # ── Force GitHub Linguist to count workflow YAML ─────────────────────────────
+# # .github/ is silently excluded by Linguist by default — force it back in
+# .github/workflows/*.yml linguist-detectable=true
+# .github/workflows/*.yml linguist-language=YAML
 
-# Keep Dockerfile visible
-Dockerfile              linguist-detectable=true
+# # Keep Dockerfile visible
+# Dockerfile              linguist-detectable=true
 
-# ── Suppress everything that is just the app (deployment target) ─────────────
-# Frontend — JS, JSX, CSS, HTML
-frontend/**             linguist-vendored=true
+# # ── Suppress everything that is just the app (deployment target) ─────────────
+# # Frontend — JS, JSX, CSS, HTML
+# frontend/**             linguist-vendored=true
 
-# Backend app code + tests
-backend/**              linguist-vendored=true
+# # Backend app code + tests
+# backend/**              linguist-vendored=true
 
-# Docs / diagrams
-docs/**                 linguist-vendored=true
+# # Docs / diagrams
+# docs/**                 linguist-vendored=true
 
-# Catch-all for any remaining JS/JSX/CSS/HTML at root level
-*.js                    linguist-vendored=true
-*.jsx                   linguist-vendored=true
-*.css                   linguist-vendored=true
-*.html                  linguist-vendored=true
-*.svg                   linguist-vendored=true
+# # Catch-all for any remaining JS/JSX/CSS/HTML at root level
+# *.js                    linguist-vendored=true
+# *.jsx                   linguist-vendored=true
+# *.css                   linguist-vendored=true
+# *.html                  linguist-vendored=true
+# *.svg                   linguist-vendored=true
