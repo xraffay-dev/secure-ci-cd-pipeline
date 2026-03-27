@@ -1,452 +1,255 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
-     width="1800px" height="900px" viewBox="0 0 1800 900"
-     style="background:#ffffff; font-family: Helvetica, Arial, sans-serif;">
-
+<svg width="100%" viewBox="0 0 720 670" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <style>
-      @keyframes flow {
-        to { stroke-dashoffset: 0; }
-      }
-      .flow-arrow {
-        animation: flow 600ms linear 0s infinite normal none running;
-        stroke-dashoffset: 20;
-      }
-      text { font-family: Helvetica, Arial, sans-serif; }
-    </style>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#555555"/>
-    </marker>
-    <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#1f6feb"/>
-    </marker>
-    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#2ea043"/>
-    </marker>
-    <marker id="arrow-orange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#f97316"/>
-    </marker>
-    <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+      orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round" />
     </marker>
   </defs>
 
-  <!-- ═══════════════════════════════════════════════════════════
-       BACKGROUND ZONES
-  ═══════════════════════════════════════════════════════════ -->
-
-  <!-- GitHub Zone (left) -->
-  <rect x="10" y="10" width="280" height="880" rx="8" fill="none" stroke="#30363d" stroke-width="2" stroke-dasharray="6,4"/>
-  <rect x="10" y="10" width="60" height="32" rx="4" fill="#24292f"/>
-  <!-- GitHub cat icon simplified -->
-  <text x="22" y="31" fill="#ffffff" font-size="13" font-weight="bold">⬡</text>
-  <text x="76" y="30" fill="#24292f" font-size="12" font-weight="bold">GitHub</text>
-
-  <!-- GitHub Actions Zone -->
-  <rect x="310" y="10" width="820" height="880" rx="8" fill="none" stroke="#2ea043" stroke-width="2" stroke-dasharray="6,4"/>
-  <rect x="310" y="10" width="150" height="32" rx="4" fill="#2ea043"/>
-  <text x="326" y="30" fill="#ffffff" font-size="12" font-weight="bold">⚙ GitHub Actions</text>
-
-  <!-- Registry + Deploy Zone -->
-  <rect x="1150" y="10" width="280" height="430" rx="8" fill="none" stroke="#1f6feb" stroke-width="2" stroke-dasharray="6,4"/>
-  <rect x="1150" y="10" width="140" height="32" rx="4" fill="#1f6feb"/>
-  <text x="1165" y="30" fill="#ffffff" font-size="12" font-weight="bold">📦 Artefacts</text>
-
-  <!-- Deployment Targets Zone -->
-  <rect x="1150" y="460" width="280" height="430" rx="8" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="6,4"/>
-  <rect x="1150" y="460" width="170" height="32" rx="4" fill="#f97316"/>
-  <text x="1165" y="480" fill="#ffffff" font-size="12" font-weight="bold">🚀 Deployment</text>
-
-  <!-- Security Zone -->
-  <rect x="1450" y="10" width="290" height="880" rx="8" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="6,4"/>
-  <rect x="1450" y="10" width="140" height="32" rx="4" fill="#ef4444"/>
-  <text x="1466" y="30" fill="#ffffff" font-size="12" font-weight="bold">🛡 Security</text>
-
-
-  <!-- ═══════════════════════════════════════════════════════════
-       COLUMN 1: GitHub — TRIGGERS
-  ═══════════════════════════════════════════════════════════ -->
-
-  <!-- Developer Push -->
-  <rect x="30" y="80" width="240" height="52" rx="6" fill="#f6f8fa" stroke="#30363d" stroke-width="1.5"/>
-  <!-- person icon -->
-  <circle cx="55" cy="103" r="8" fill="#24292f"/>
-  <path d="M42 122 Q55 112 68 122" stroke="#24292f" stroke-width="2" fill="none"/>
-  <text x="75" y="100" fill="#24292f" font-size="11" font-weight="bold">Developer Push</text>
-  <text x="75" y="115" fill="#57606a" font-size="10">push to main branch</text>
-
-  <!-- Pull Request -->
-  <rect x="30" y="160" width="240" height="52" rx="6" fill="#f6f8fa" stroke="#30363d" stroke-width="1.5"/>
-  <!-- PR icon -->
-  <circle cx="52" cy="183" r="7" fill="none" stroke="#8250df" stroke-width="2"/>
-  <line x1="52" y1="190" x2="52" y2="200" stroke="#8250df" stroke-width="2"/>
-  <circle cx="68" cy="200" r="5" fill="#8250df"/>
-  <text x="80" y="180" fill="#24292f" font-size="11" font-weight="bold">Pull Request → main</text>
-  <text x="80" y="195" fill="#57606a" font-size="10">triggers SAST scan</text>
-
-  <!-- Git Tag -->
-  <rect x="30" y="240" width="240" height="52" rx="6" fill="#f6f8fa" stroke="#30363d" stroke-width="1.5"/>
-  <rect x="44" y="255" width="22" height="16" rx="3" fill="#cf222e"/>
-  <text x="47" y="268" fill="#ffffff" font-size="10" font-weight="bold">v1.0</text>
-  <text x="76" y="260" fill="#24292f" font-size="11" font-weight="bold">Git Tag v*.*.*</text>
-  <text x="76" y="275" fill="#57606a" font-size="10">production release gate</text>
-
-  <!-- Cron -->
-  <rect x="30" y="320" width="240" height="52" rx="6" fill="#f6f8fa" stroke="#30363d" stroke-width="1.5"/>
-  <!-- clock icon -->
-  <circle cx="54" cy="346" r="12" fill="none" stroke="#0969da" stroke-width="2"/>
-  <line x1="54" y1="338" x2="54" y2="346" stroke="#0969da" stroke-width="2"/>
-  <line x1="54" y1="346" x2="62" y2="350" stroke="#0969da" stroke-width="2"/>
-  <text x="74" y="342" fill="#24292f" font-size="11" font-weight="bold">Cron Schedule</text>
-  <text x="74" y="357" fill="#57606a" font-size="10">Mon 09:00 UTC</text>
-
-  <!-- workflow_dispatch -->
-  <rect x="30" y="400" width="240" height="52" rx="6" fill="#f6f8fa" stroke="#30363d" stroke-width="1.5"/>
-  <polygon points="44,426 56,418 56,434" fill="#0969da"/>
-  <rect x="58" y="419" width="12" height="14" rx="2" fill="#0969da"/>
-  <text x="76" y="422" fill="#24292f" font-size="11" font-weight="bold">workflow_dispatch</text>
-  <text x="76" y="437" fill="#57606a" font-size="10">manual trigger</text>
-
-  <!-- GitHub logo at bottom -->
-  <image x="100" y="810" width="60" height="60" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDBDNS4zNyAwIDAgNS4zNyAwIDEyYzAgNS4zMSAzLjQzNSA5LjgxIDguMjA1IDExLjM4NS42LjExMy44MjUtLjI1OC44MjUtLjU3NyAwLS4yODUtLjAxLTEuMDQtLjAxNS0yLjA0LTMuMzM4LjcyNC00LjA0Mi0xLjYxLTQuMDQyLTEuNjFDNC40MjIgMTguMDcgMy42MzMgMTcuNyAzLjYzMyAxNy43Yy0xLjA4Ny0uNzQ0LjA4NC0uNzI5LjA4NC0uNzI5IDEuMjA1LjA4NCAxLjgzOCAxLjIzNiAxLjgzOCAxLjIzNiAxLjA3IDEuODM1IDIuODA5IDEuMzA1IDMuNDk1Ljk5OC4xMDgtLjc3Ni40MTctMS4zMDUuNzYtMS42MDUtMi42NjUtLjMtNS40NjYtMS4zMzItNS40NjYtNS45MyAwLTEuMzEuNDY1LTIuMzggMS4yMzUtMy4yMi0uMTM1LS4zMDMtLjU0LTEuNTIzLjEwNS0zLjE3NiAwIDAgMS4wMDUtLjMyMiAzLjMgMS4yMy45Ni0uMjY3IDEuOTgtLjM5OSAzLS40MDUgMS4wMi4wMDYgMi4wNC4xMzggMyAuNDA1IDIuMjgtMS41NTIgMy4yODUtMS4yMyAzLjI4NS0xLjIzLjY0NSAxLjY1My4yNCAyLjg3My4xMiAzLjE3Ni43NjUuODQgMS4yMyAxLjkxIDEuMjMgMy4yMiAwIDQuNjEtMi44MDUgNS42MjUtNS40NzUgNS45Mi40My4zNzIuODIzIDEuMTAyLjgyMyAyLjIyMnYzLjI5M2MwIC4zMTkuMTkyLjY5NC44MjUuNTc2QzIwLjU2NSAyMS44MSAyNCAxNy4zMDUgMjQgMTJjMC02LjYzLTUuMzctMTItMTItMTJ6IiBmaWxsPSIjMjQyOTJmIi8+PC9zdmc+"/>
-  <text x="115" y="885" fill="#24292f" font-size="11" text-anchor="middle">GitHub</text>
-
-
-  <!-- ═══════════════════════════════════════════════════════════
-       COLUMN 2: WORKFLOW CARDS
-  ═══════════════════════════════════════════════════════════ -->
-
-  <!-- ── CI Pipeline ── -->
-  <rect x="330" y="55" width="200" height="190" rx="8" fill="#ffffff" stroke="#2ea043" stroke-width="2"/>
-  <rect x="330" y="55" width="200" height="6" rx="4" fill="#2ea043"/>
-  <!-- test tube icon area -->
-  <rect x="340" y="72" width="36" height="36" rx="6" fill="#dafbe1"/>
-  <text x="358" y="95" font-size="20" text-anchor="middle">🧪</text>
-  <text x="385" y="84" fill="#24292f" font-size="11" font-weight="bold">CI Pipeline</text>
-  <text x="385" y="97" fill="#57606a" font-size="9" font-family="monospace">ci.yml</text>
-
-  <line x1="340" y1="116" x2="520" y2="116" stroke="#d0d7de" stroke-width="0.8"/>
-
-  <circle cx="349" cy="130" r="4" fill="#2ea043"/>
-  <text x="360" y="134" fill="#24292f" font-size="10">Backend Tests (Jest)</text>
-  <circle cx="349" cy="148" r="4" fill="#2ea043"/>
-  <text x="360" y="152" fill="#24292f" font-size="10">Frontend Lint (ESLint)</text>
-  <circle cx="349" cy="166" r="4" fill="#2ea043"/>
-  <text x="360" y="170" fill="#24292f" font-size="10">Vite Build Check</text>
-  <circle cx="349" cy="184" r="4" fill="#2ea043"/>
-  <text x="360" y="188" fill="#24292f" font-size="10">npm cache (lock hash)</text>
-  <circle cx="349" cy="202" r="4" fill="#2ea043"/>
-  <text x="360" y="206" fill="#24292f" font-size="10">needs: backend-tests</text>
-
-  <!-- ── Docker Build ── -->
-  <rect x="330" y="270" width="200" height="200" rx="8" fill="#ffffff" stroke="#1f6feb" stroke-width="2"/>
-  <rect x="330" y="270" width="200" height="6" rx="4" fill="#1f6feb"/>
-  <rect x="340" y="287" width="36" height="36" rx="6" fill="#ddf4ff"/>
-  <text x="358" y="310" font-size="20" text-anchor="middle">🐳</text>
-  <text x="385" y="299" fill="#24292f" font-size="11" font-weight="bold">Build Docker Image</text>
-  <text x="385" y="312" fill="#57606a" font-size="9" font-family="monospace">docker.yml</text>
-
-  <line x1="340" y1="332" x2="520" y2="332" stroke="#d0d7de" stroke-width="0.8"/>
-
-  <circle cx="349" cy="347" r="4" fill="#1f6feb"/>
-  <text x="360" y="351" fill="#24292f" font-size="10">Multi-stage docker build</text>
-  <circle cx="349" cy="365" r="4" fill="#cf222e"/>
-  <text x="360" y="369" fill="#24292f" font-size="10">🛡 Trivy scan CRIT+HIGH</text>
-  <circle cx="349" cy="383" r="4" fill="#cf222e"/>
-  <text x="360" y="387" fill="#24292f" font-size="10">exit-code:1 → hard gate</text>
-  <circle cx="349" cy="401" r="4" fill="#1f6feb"/>
-  <text x="360" y="405" fill="#24292f" font-size="10">Push :sha + :latest → GHCR</text>
-  <circle cx="349" cy="419" r="4" fill="#1f6feb"/>
-  <text x="360" y="423" fill="#24292f" font-size="10">GITHUB_TOKEN auth</text>
-  <circle cx="349" cy="437" r="4" fill="#1f6feb"/>
-  <text x="360" y="441" fill="#24292f" font-size="10">permissions: least-priv</text>
-
-  <!-- ── CodeQL SAST ── -->
-  <rect x="550" y="55" width="200" height="190" rx="8" fill="#ffffff" stroke="#8250df" stroke-width="2"/>
-  <rect x="550" y="55" width="200" height="6" rx="4" fill="#8250df"/>
-  <rect x="560" y="72" width="36" height="36" rx="6" fill="#fbefff"/>
-  <text x="578" y="95" font-size="20" text-anchor="middle">🔍</text>
-  <text x="605" y="84" fill="#24292f" font-size="11" font-weight="bold">CodeQL SAST</text>
-  <text x="605" y="97" fill="#57606a" font-size="9" font-family="monospace">codeql.yml</text>
-
-  <line x1="560" y1="116" x2="740" y2="116" stroke="#d0d7de" stroke-width="0.8"/>
-
-  <circle cx="569" cy="130" r="4" fill="#8250df"/>
-  <text x="580" y="134" fill="#24292f" font-size="10">on: pull_request → main</text>
-  <circle cx="569" cy="148" r="4" fill="#8250df"/>
-  <text x="580" y="152" fill="#24292f" font-size="10">JS data-flow analysis</text>
-  <circle cx="569" cy="166" r="4" fill="#8250df"/>
-  <text x="580" y="170" fill="#24292f" font-size="10">Taint tracking</text>
-  <circle cx="569" cy="184" r="4" fill="#8250df"/>
-  <text x="580" y="188" fill="#24292f" font-size="10">security-events: write</text>
-  <circle cx="569" cy="202" r="4" fill="#8250df"/>
-  <text x="580" y="206" fill="#24292f" font-size="10">Posts findings to PR</text>
-
-  <!-- ── Deploy Staging ── -->
-  <rect x="550" y="270" width="200" height="170" rx="8" fill="#ffffff" stroke="#f97316" stroke-width="2"/>
-  <rect x="550" y="270" width="200" height="6" rx="4" fill="#f97316"/>
-  <rect x="560" y="287" width="36" height="36" rx="6" fill="#fff7ed"/>
-  <text x="578" y="310" font-size="20" text-anchor="middle">🌐</text>
-  <text x="605" y="299" fill="#24292f" font-size="11" font-weight="bold">Deploy Staging</text>
-  <text x="605" y="312" fill="#57606a" font-size="9" font-family="monospace">deploy-staging.yml</text>
-
-  <line x1="560" y1="332" x2="740" y2="332" stroke="#d0d7de" stroke-width="0.8"/>
-
-  <circle cx="569" cy="347" r="4" fill="#f97316"/>
-  <text x="580" y="351" fill="#24292f" font-size="10">on: workflow_run completed</text>
-  <circle cx="569" cy="365" r="4" fill="#f97316"/>
-  <text x="580" y="369" fill="#24292f" font-size="10">environment: staging</text>
-  <circle cx="569" cy="383" r="4" fill="#f97316"/>
-  <text x="580" y="387" fill="#24292f" font-size="10">Render deploy webhook</text>
-  <circle cx="569" cy="401" r="4" fill="#f97316"/>
-  <text x="580" y="405" fill="#24292f" font-size="10">RENDER_STAGING_HOOK</text>
-
-  <!-- ── Deploy Production ── -->
-  <rect x="770" y="55" width="200" height="170" rx="8" fill="#ffffff" stroke="#cf222e" stroke-width="2"/>
-  <rect x="770" y="55" width="200" height="6" rx="4" fill="#cf222e"/>
-  <rect x="780" y="72" width="36" height="36" rx="6" fill="#ffebe9"/>
-  <text x="798" y="95" font-size="20" text-anchor="middle">🔒</text>
-  <text x="825" y="84" fill="#24292f" font-size="11" font-weight="bold">Deploy Production</text>
-  <text x="825" y="97" fill="#57606a" font-size="9" font-family="monospace">deploy-production.yml</text>
-
-  <line x1="780" y1="116" x2="960" y2="116" stroke="#d0d7de" stroke-width="0.8"/>
-
-  <circle cx="789" cy="130" r="4" fill="#cf222e"/>
-  <text x="800" y="134" fill="#24292f" font-size="10">on: push tags v*.*.*</text>
-  <circle cx="789" cy="148" r="4" fill="#cf222e"/>
-  <text x="800" y="152" fill="#24292f" font-size="10">environment: production</text>
-  <circle cx="789" cy="166" r="4" fill="#cf222e"/>
-  <text x="800" y="170" fill="#24292f" font-size="10">Render deploy webhook</text>
-  <circle cx="789" cy="184" r="4" fill="#cf222e"/>
-  <text x="800" y="188" fill="#24292f" font-size="10">RENDER_PRODUCTION_HOOK</text>
-  <circle cx="789" cy="202" r="4" fill="#cf222e"/>
-  <text x="800" y="206" fill="#24292f" font-size="10">Manual tag required</text>
-
-  <!-- ── Security Audit ── -->
-  <rect x="770" y="270" width="200" height="200" rx="8" fill="#ffffff" stroke="#0969da" stroke-width="2"/>
-  <rect x="770" y="270" width="200" height="6" rx="4" fill="#0969da"/>
-  <rect x="780" y="287" width="36" height="36" rx="6" fill="#ddf4ff"/>
-  <text x="798" y="310" font-size="20" text-anchor="middle">📋</text>
-  <text x="825" y="299" fill="#24292f" font-size="11" font-weight="bold">Weekly Security Audit</text>
-  <text x="825" y="312" fill="#57606a" font-size="9" font-family="monospace">security-audit.yml</text>
-
-  <line x1="780" y1="332" x2="960" y2="332" stroke="#d0d7de" stroke-width="0.8"/>
-
-  <circle cx="789" cy="347" r="4" fill="#0969da"/>
-  <text x="800" y="351" fill="#24292f" font-size="10">cron: 0 9 * * 1 (Mon)</text>
-  <circle cx="789" cy="365" r="4" fill="#0969da"/>
-  <text x="800" y="369" fill="#24292f" font-size="10">npm audit --audit-level=high</text>
-  <circle cx="789" cy="383" r="4" fill="#0969da"/>
-  <text x="800" y="387" fill="#24292f" font-size="10">Parallel: frontend + backend</text>
-  <circle cx="789" cy="401" r="4" fill="#0969da"/>
-  <text x="800" y="405" fill="#24292f" font-size="10">Sparse checkout per job</text>
-  <circle cx="789" cy="419" r="4" fill="#0969da"/>
-  <text x="800" y="423" fill="#24292f" font-size="10">Results → $GITHUB_STEP_SUMMARY</text>
-
-  <!-- ── Dockerfile sub-box ── -->
-  <rect x="330" y="500" width="640" height="140" rx="8" fill="#fff8e1" stroke="#d86613" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <text x="350" y="522" fill="#d86613" font-size="12" font-weight="bold">🐳 Dockerfile — 3-Stage Multi-Stage Build</text>
-  <line x1="340" y1="530" x2="960" y2="530" stroke="#d86613" stroke-width="0.6" stroke-dasharray="3,2"/>
-
-  <!-- Stage 1 -->
-  <rect x="348" y="540" width="180" height="82" rx="5" fill="#ffffff" stroke="#2ea043" stroke-width="1.5"/>
-  <text x="438" y="557" fill="#2ea043" font-size="10" font-weight="bold" text-anchor="middle">Stage 1: frontend-build</text>
-  <text x="438" y="570" fill="#57606a" font-size="9" text-anchor="middle">node:20-alpine</text>
-  <text x="360" y="585" fill="#24292f" font-size="9">• npm ci</text>
-  <text x="360" y="597" fill="#24292f" font-size="9">• vite build → /dist</text>
-  <text x="360" y="609" fill="#24292f" font-size="9">• Build tools only</text>
-
-  <!-- Arrow stage 1→3 -->
-  <path d="M538 581 L568 581" stroke="#555" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
-
-  <!-- Stage 2 -->
-  <rect x="568" y="540" width="180" height="82" rx="5" fill="#ffffff" stroke="#0969da" stroke-width="1.5"/>
-  <text x="658" y="557" fill="#0969da" font-size="10" font-weight="bold" text-anchor="middle">Stage 2: server-build</text>
-  <text x="658" y="570" fill="#57606a" font-size="9" text-anchor="middle">node:20</text>
-  <text x="580" y="585" fill="#24292f" font-size="9">• npm ci</text>
-  <text x="580" y="597" fill="#24292f" font-size="9">• npm prune --omit=dev</text>
-  <text x="580" y="609" fill="#24292f" font-size="9">• Prod deps only</text>
-
-  <!-- Arrow stage 2→3 -->
-  <path d="M748 581 L778 581" stroke="#555" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
-
-  <!-- Stage 3 -->
-  <rect x="778" y="540" width="180" height="82" rx="5" fill="#ffffff" stroke="#cf222e" stroke-width="1.5"/>
-  <text x="868" y="557" fill="#cf222e" font-size="10" font-weight="bold" text-anchor="middle">Stage 3: runtime ← FINAL</text>
-  <text x="868" y="570" fill="#57606a" font-size="9" text-anchor="middle">node:20-alpine</text>
-  <text x="790" y="585" fill="#24292f" font-size="9">• apk upgrade (OS patches)</text>
-  <text x="790" y="597" fill="#24292f" font-size="9">• npm/npx/corepack REMOVED</text>
-  <text x="790" y="609" fill="#24292f" font-size="9">• EXPOSE 8000 · CMD node</text>
-
-
-  <!-- ═══════════════════════════════════════════════════════════
-       COLUMN 3: ARTEFACTS & DEPLOY
-  ═══════════════════════════════════════════════════════════ -->
-
-  <!-- GHCR -->
-  <rect x="1170" y="60" width="240" height="90" rx="8" fill="#ffffff" stroke="#1f6feb" stroke-width="1.5"/>
-  <rect x="1180" y="72" width="36" height="36" rx="6" fill="#ddf4ff"/>
-  <text x="1198" y="95" font-size="21" text-anchor="middle">📦</text>
-  <text x="1225" y="82" fill="#24292f" font-size="11" font-weight="bold">GHCR</text>
-  <text x="1225" y="95" fill="#57606a" font-size="10">ghcr.io/user/repo</text>
-  <text x="1225" y="108" fill="#57606a" font-size="9">:sha-tag  (immutable)</text>
-  <text x="1225" y="120" fill="#57606a" font-size="9">:latest   (canonical)</text>
-
-  <!-- GitHub Security Tab -->
-  <rect x="1170" y="175" width="240" height="80" rx="8" fill="#ffffff" stroke="#8250df" stroke-width="1.5"/>
-  <rect x="1180" y="187" width="36" height="36" rx="6" fill="#fbefff"/>
-  <text x="1198" y="210" font-size="21" text-anchor="middle">🔍</text>
-  <text x="1225" y="197" fill="#24292f" font-size="11" font-weight="bold">GitHub Security Tab</text>
-  <text x="1225" y="210" fill="#57606a" font-size="10">CodeQL findings per PR</text>
-  <text x="1225" y="223" fill="#57606a" font-size="9">security-events: write</text>
-
-  <!-- Job Summary -->
-  <rect x="1170" y="278" width="240" height="80" rx="8" fill="#ffffff" stroke="#0969da" stroke-width="1.5"/>
-  <rect x="1180" y="290" width="36" height="36" rx="6" fill="#ddf4ff"/>
-  <text x="1198" y="313" font-size="21" text-anchor="middle">📄</text>
-  <text x="1225" y="300" fill="#24292f" font-size="11" font-weight="bold">Workflow Job Summary</text>
-  <text x="1225" y="313" fill="#57606a" font-size="10">npm audit report</text>
-  <text x="1225" y="326" fill="#57606a" font-size="9">$GITHUB_STEP_SUMMARY</text>
-
-  <!-- Render Staging -->
-  <rect x="1170" y="490" width="240" height="80" rx="8" fill="#ffffff" stroke="#f97316" stroke-width="1.5"/>
-  <rect x="1180" y="502" width="36" height="36" rx="6" fill="#fff7ed"/>
-  <text x="1198" y="525" font-size="21" text-anchor="middle">🌐</text>
-  <text x="1225" y="512" fill="#24292f" font-size="11" font-weight="bold">Render — Staging</text>
-  <text x="1225" y="525" fill="#57606a" font-size="10">Auto on Docker build</text>
-  <text x="1225" y="538" fill="#57606a" font-size="9">environment: staging</text>
-
-  <!-- Render Production -->
-  <rect x="1170" y="595" width="240" height="80" rx="8" fill="#ffffff" stroke="#cf222e" stroke-width="1.5"/>
-  <rect x="1180" y="607" width="36" height="36" rx="6" fill="#ffebe9"/>
-  <text x="1198" y="630" font-size="21" text-anchor="middle">🔒</text>
-  <text x="1225" y="617" fill="#24292f" font-size="11" font-weight="bold">Render — Production</text>
-  <text x="1225" y="630" fill="#57606a" font-size="10">Tag-gated promotion</text>
-  <text x="1225" y="643" fill="#57606a" font-size="9">environment: production</text>
-
-
-  <!-- ═══════════════════════════════════════════════════════════
-       COLUMN 4: SECURITY CONCEPTS
-  ═══════════════════════════════════════════════════════════ -->
-
-  <!-- Shift-Left Security -->
-  <rect x="1470" y="60" width="248" height="60" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="1481" y="80" fill="#ef4444" font-size="11" font-weight="bold">🛡 Shift-Left Security</text>
-  <text x="1481" y="95" fill="#57606a" font-size="9">Vulnerabilities caught at build time</text>
-  <text x="1481" y="107" fill="#57606a" font-size="9">not in production</text>
-
-  <!-- Least Privilege -->
-  <rect x="1470" y="140" width="248" height="60" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="1481" y="160" fill="#ef4444" font-size="11" font-weight="bold">🔑 Least Privilege</text>
-  <text x="1481" y="175" fill="#57606a" font-size="9">permissions: scoped per workflow</text>
-  <text x="1481" y="187" fill="#57606a" font-size="9">No static credentials stored</text>
-
-  <!-- Immutable Tags -->
-  <rect x="1470" y="220" width="248" height="60" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="1481" y="240" fill="#ef4444" font-size="11" font-weight="bold">🏷 Immutable Image Tags</text>
-  <text x="1481" y="255" fill="#57606a" font-size="9">Every push tagged :sha</text>
-  <text x="1481" y="267" fill="#57606a" font-size="9">Full deployment traceability</text>
-
-  <!-- Env Isolation -->
-  <rect x="1470" y="300" width="248" height="60" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="1481" y="320" fill="#ef4444" font-size="11" font-weight="bold">🏗 Environment Isolation</text>
-  <text x="1481" y="335" fill="#57606a" font-size="9">staging / production scoped secrets</text>
-  <text x="1481" y="347" fill="#57606a" font-size="9">GitHub Environments protection</text>
-
-  <!-- Tag-Gated -->
-  <rect x="1470" y="380" width="248" height="60" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="1481" y="400" fill="#ef4444" font-size="11" font-weight="bold">🚦 Tag-Gated Promotion</text>
-  <text x="1481" y="415" fill="#57606a" font-size="9">Production requires git tag v*.*.*</text>
-  <text x="1481" y="427" fill="#57606a" font-size="9">No accidental deploys</text>
-
-  <!-- Proactive CVE -->
-  <rect x="1470" y="460" width="248" height="60" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="1481" y="480" fill="#ef4444" font-size="11" font-weight="bold">📡 Proactive CVE Scanning</text>
-  <text x="1481" y="495" fill="#57606a" font-size="9">Weekly cron — no trigger needed</text>
-  <text x="1481" y="507" fill="#57606a" font-size="9">npm audit + Trivy image scan</text>
-
-  <!-- Sparse Checkout -->
-  <rect x="1470" y="540" width="248" height="60" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="1481" y="560" fill="#ef4444" font-size="11" font-weight="bold">⚡ Sparse Checkout</text>
-  <text x="1481" y="575" fill="#57606a" font-size="9">Clone only required subdirectory</text>
-  <text x="1481" y="587" fill="#57606a" font-size="9">Faster, minimal attack surface</text>
-
-  <!-- Cache Invalidation -->
-  <rect x="1470" y="620" width="248" height="60" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="1481" y="640" fill="#ef4444" font-size="11" font-weight="bold">🔄 Deterministic Cache</text>
-  <text x="1481" y="655" fill="#57606a" font-size="9">actions/cache@v4 keyed on</text>
-  <text x="1481" y="667" fill="#57606a" font-size="9">hashFiles('**/package-lock.json')</text>
-
-
-  <!-- ═══════════════════════════════════════════════════════════
-       FLOW ARROWS
-  ═══════════════════════════════════════════════════════════ -->
-
-  <!-- Push → CI Pipeline -->
-  <path d="M272 106 L326 120" stroke="#2ea043" stroke-width="1.8" stroke-dasharray="8,4" fill="none" class="flow-arrow" marker-end="url(#arrow-green)"/>
-
-  <!-- PR → CodeQL -->
-  <path d="M272 186 L546 110" stroke="#8250df" stroke-width="1.8" stroke-dasharray="8,4" fill="none" class="flow-arrow" marker-end="url(#arrow)"/>
-
-  <!-- Git Tag → Deploy Prod -->
-  <path d="M272 266 L766 130" stroke="#cf222e" stroke-width="1.8" stroke-dasharray="8,4" fill="none" class="flow-arrow" marker-end="url(#arrow-red)"/>
-
-  <!-- Push → Docker Build -->
-  <path d="M272 106 L326 340" stroke="#1f6feb" stroke-width="1.8" stroke-dasharray="8,4" fill="none" class="flow-arrow" marker-end="url(#arrow-blue)"/>
-
-  <!-- Cron → Security Audit -->
-  <path d="M272 346 L766 340" stroke="#0969da" stroke-width="1.8" stroke-dasharray="8,4" fill="none" class="flow-arrow" marker-end="url(#arrow)"/>
-
-  <!-- workflow_dispatch → any (to Docker) -->
-  <path d="M272 426 L326 370" stroke="#555" stroke-width="1.5" stroke-dasharray="6,4" fill="none" class="flow-arrow" marker-end="url(#arrow)"/>
-
-  <!-- Docker Build → GHCR -->
-  <path d="M532 330 L1166 105" stroke="#1f6feb" stroke-width="1.8" stroke-dasharray="8,4" fill="none" class="flow-arrow" marker-end="url(#arrow-blue)"/>
-  <!-- label -->
-  <rect x="790" y="184" width="110" height="18" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
-  <text x="845" y="196" fill="#0969da" font-size="10" text-anchor="middle">push :sha + :latest</text>
-
-  <!-- Docker Build → Deploy Staging (workflow_run) -->
-  <path d="M532 400 L1166 530" stroke="#f97316" stroke-width="1.8" stroke-dasharray="8,4" fill="none" class="flow-arrow" marker-end="url(#arrow-orange)"/>
-  <rect x="774" y="446" width="110" height="18" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
-  <text x="829" y="458" fill="#f97316" font-size="10" text-anchor="middle">workflow_run</text>
-
-  <!-- Git Tag → Deploy Prod -->
-  <path d="M272 266 Q620 266 620 450 Q620 643 1166 635" stroke="#cf222e" stroke-width="1.8" stroke-dasharray="8,4" fill="none" class="flow-arrow" marker-end="url(#arrow-red)"/>
-
-  <!-- CodeQL → Security Tab -->
-  <path d="M752 110 L1166 215" stroke="#8250df" stroke-width="1.5" stroke-dasharray="6,4" fill="none" class="flow-arrow" marker-end="url(#arrow)"/>
-
-  <!-- Security Audit → Job Summary -->
-  <path d="M972 380 L1166 318" stroke="#0969da" stroke-width="1.5" stroke-dasharray="6,4" fill="none" class="flow-arrow" marker-end="url(#arrow)"/>
-
-  <!-- Deploy Staging → Render Staging -->
-  <path d="M752 370 Q1100 370 1100 530 L1166 530" stroke="#f97316" stroke-width="1.5" stroke-dasharray="6,4" fill="none" class="flow-arrow" marker-end="url(#arrow-orange)"/>
-
-  <!-- ═══════════════════════════════════════════════════════════
-       LEGEND
-  ═══════════════════════════════════════════════════════════ -->
-  <rect x="330" y="665" width="620" height="70" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
-  <text x="350" y="683" fill="#57606a" font-size="10" font-weight="bold">Legend</text>
-  <line x1="350" y1="695" x2="390" y2="695" stroke="#2ea043" stroke-width="2" stroke-dasharray="8,4"/>
-  <text x="396" y="699" fill="#24292f" font-size="10">Successful flow</text>
-  <line x1="480" y1="695" x2="520" y2="695" stroke="#cf222e" stroke-width="2" stroke-dasharray="8,4"/>
-  <text x="526" y="699" fill="#24292f" font-size="10">Tag-gated deploy</text>
-  <line x1="610" y1="695" x2="650" y2="695" stroke="#1f6feb" stroke-width="2" stroke-dasharray="8,4"/>
-  <text x="656" y="699" fill="#24292f" font-size="10">Push to registry</text>
-  <line x1="735" y1="695" x2="775" y2="695" stroke="#f97316" stroke-width="2" stroke-dasharray="8,4"/>
-  <text x="781" y="699" fill="#24292f" font-size="10">workflow_run chain</text>
-
-  <circle cx="355" cy="717" r="5" fill="#cf222e"/>
-  <text x="366" y="721" fill="#24292f" font-size="10">Hard security gate (exit-code:1)</text>
-  <circle cx="490" cy="717" r="5" fill="#2ea043"/>
-  <text x="501" y="721" fill="#24292f" font-size="10">Step passes gate</text>
-  <!-- Trivy gate annotation -->
-  <rect x="594" y="709" width="140" height="18" rx="4" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
-  <text x="664" y="721" fill="#cf222e" font-size="10" text-anchor="middle">🛡 Trivy blocks push</text>
-
-  <!-- Title -->
-  <text x="900" y="780" fill="#24292f" font-size="20" font-weight="bold" text-anchor="middle">Secure CI/CD Pipeline — Architecture</text>
-  <text x="900" y="800" fill="#57606a" font-size="12" text-anchor="middle">xraffay-dev/secure-ci-cd-pipeline · GitHub Actions · Docker · GHCR · Render · Trivy · CodeQL</text>
-
+  <!-- Background -->
+  <rect width="720" height="670" fill="rgb(255,255,255)" />
+
+  <!-- ── LEFT TRIGGER ANNOTATIONS ── -->
+  <text x="10" y="89" dominant-baseline="central"
+    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px">→
+    push / PR to main</text>
+  <line x1="164" y1="89" x2="182" y2="89" stroke="rgb(160,158,150)" stroke-width="0.5"
+    stroke-dasharray="2 2" />
+
+  <text x="10" y="159" dominant-baseline="central"
+    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px">→
+    push / PR to main</text>
+  <line x1="164" y1="159" x2="182" y2="159" stroke="rgb(160,158,150)" stroke-width="0.5"
+    stroke-dasharray="2 2" />
+
+  <text x="10" y="352"
+    dominant-baseline="central"
+    style="fill:rgb(30,100,190);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px">
+
+    <tspan x="10" dy="0">→ auto: Build Docker Image</tspan>
+    <tspan x="24" dy="16"> Completed in Success ✓</tspan>
+
+  </text>
+
+  <text x="10" y="452" dominant-baseline="central"
+    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px">→
+    push tag v*.*.*</text>
+  <line x1="142" y1="452" x2="182" y2="452" stroke="rgb(160,158,150)" stroke-width="0.5"
+    stroke-dasharray="2 2" />
+
+  <!-- ── SECURITY COLUMN HEADER ── -->
+  <text x="584" y="50" text-anchor="middle"
+    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px">Security gates</text>
+
+  <!-- ══════════════ MAIN FLOW ══════════════ -->
+
+  <!-- Phase 1 · CI (teal) -->
+  <g>
+    <rect x="185" y="62" width="282" height="52" rx="8" fill="rgb(220,248,238)"
+      stroke="rgb(20,150,100)" stroke-width="1" />
+    <text x="326" y="81" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(6,80,52);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;font-weight:600">Lint
+      + test</text>
+    <text x="326" y="101" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(15,110,72);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px">Node
+      18 &amp; 22 matrix · Jest · ESLint</text>
+  </g>
+
+  <!-- Arrow CI → Docker -->
+  <line x1="326" y1="116" x2="326" y2="128" marker-end="url(#arr)"
+    style="stroke:rgb(140,138,130);stroke-width:1.5" />
+
+  <!-- Phase 2 · Docker build (purple) -->
+  <g>
+    <rect x="185" y="130" width="282" height="46" rx="8" fill="rgb(235,232,255)"
+      stroke="rgb(100,88,210)" stroke-width="1" />
+    <text x="326" y="148" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(50,38,140);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;font-weight:600">Build
+      Docker Image</text>
+    <text x="326" y="166" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(80,68,180);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px">3-stage
+      build · node:20-alpine</text>
+  </g>
+
+  <!-- Arrow Docker → Trivy -->
+  <line x1="326" y1="178" x2="326" y2="190" marker-end="url(#arr)"
+    style="stroke:rgb(140,138,130);stroke-width:1.5" />
+
+  <!-- Trivy CVE scan (amber) -->
+  <g>
+    <rect x="185" y="192" width="282" height="46" rx="8" fill="rgb(255,240,210)"
+      stroke="rgb(200,120,10)" stroke-width="1" />
+    <text x="326" y="210" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(110,58,0);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;font-weight:600">Trivy
+      CVE scan</text>
+    <text x="326" y="228" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(160,90,6);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px">fail
+      on CRITICAL / HIGH · blocks push</text>
+  </g>
+
+  <!-- Arrow Trivy → GHCR -->
+  <line x1="326" y1="240" x2="326" y2="252" marker-end="url(#arr)"
+    style="stroke:rgb(140,138,130);stroke-width:1.5" />
+
+  <!-- Push to GHCR (purple) -->
+  <g>
+    <rect x="185" y="254" width="282" height="46" rx="8" fill="rgb(235,232,255)"
+      stroke="rgb(100,88,210)" stroke-width="1" />
+    <text x="326" y="272" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(50,38,140);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;font-weight:600">Push
+      image to GHCR</text>
+    <text x="326" y="290" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(80,68,180);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px">tagged
+      :sha + :latest · GITHUB_TOKEN</text>
+  </g>
+
+  <!-- Arrow GHCR → Staging with auto-trigger label -->
+  <line x1="326" y1="302" x2="326" y2="326" marker-end="url(#arr)"
+    style="stroke:rgb(50,120,210);stroke-width:1.5" />
+  <text x="334" y="316"
+    style="fill:rgb(30,100,190);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:10px">auto-triggers
+    ↓</text>
+
+  <!-- Staging environment container -->
+  <rect x="171" y="328" width="310" height="62" rx="10" fill="none" stroke="rgb(50,110,200)"
+    stroke-dasharray="5 4" stroke-width="0.75" />
+  <text x="183" y="342"
+    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px">Staging
+    environment</text>
+
+  <!-- Deploy Staging (blue) -->
+  <g>
+    <rect x="185" y="348" width="282" height="36" rx="8" fill="rgb(220,236,255)"
+      stroke="rgb(50,120,210)" stroke-width="1" />
+    <text x="326" y="361" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(10,50,120);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;font-weight:600">Deploy
+      to Staging</text>
+    <text x="326" y="376" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(30,90,180);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px">auto
+      · Render staging hook</text>
+  </g>
+
+  <!-- Dashed gap staging → production -->
+  <line x1="326" y1="392" x2="326" y2="414" stroke="rgb(160,158,150)" stroke-width="0.5"
+    stroke-dasharray="3 3" />
+
+  <!-- Production environment container -->
+  <rect x="171" y="416" width="310" height="198" rx="10" fill="none" stroke="rgb(200,70,65)"
+    stroke-dasharray="5 4" stroke-width="0.75" />
+  <text x="183" y="430"
+    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px">Production
+    environment</text>
+
+  <!-- Tag gate (gray) -->
+  <g>
+    <rect x="185" y="436" width="282" height="42" rx="8" fill="rgb(235,234,230)"
+      stroke="rgb(140,138,130)" stroke-width="1" />
+    <text x="326" y="452" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(50,50,46);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;font-weight:600">Tag
+      gate</text>
+    <text x="326" y="469" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(90,88,82);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px">v*.*.*
+      tag · env: production</text>
+  </g>
+
+  <!-- Arrow gate → deploy prod -->
+  <line x1="326" y1="480" x2="326" y2="492" marker-end="url(#arr)"
+    style="stroke:rgb(140,138,130);stroke-width:1.5" />
+
+  <!-- Deploy Production (coral) -->
+  <g>
+    <rect x="185" y="494" width="282" height="42" rx="8" fill="rgb(255,228,218)"
+      stroke="rgb(200,95,60)" stroke-width="1" />
+    <text x="326" y="510" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(110,36,10);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;font-weight:600">Deploy
+      to Production</text>
+    <text x="326" y="527" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(170,70,35);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px">Render
+      hook · same image promoted</text>
+  </g>
+
+  <!-- Arrow deploy → slack -->
+  <line x1="326" y1="538" x2="326" y2="550" marker-end="url(#arr)"
+    style="stroke:rgb(140,138,130);stroke-width:1.5" />
+
+  <!-- Slack failure alert (violet) -->
+  <g>
+    <rect x="185" y="552" width="282" height="42" rx="8" fill="rgb(242,232,255)"
+      stroke="rgb(130,70,200)" stroke-width="1" />
+    <text x="326" y="568" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(60,20,110);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;font-weight:600">Slack
+      failure alert</text>
+    <text x="326" y="585" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(100,45,170);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px">notify
+      job · if: failure()</text>
+  </g>
+
+  <!-- ══════════════ SECURITY COLUMN ══════════════ -->
+
+  <!-- CodeQL (amber) -->
+  <g>
+    <rect x="490" y="62" width="194" height="46" rx="8" fill="rgb(255,240,210)"
+      stroke="rgb(200,120,10)" stroke-width="1" />
+    <text x="587" y="80" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(110,58,0);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;font-weight:600">CodeQL
+      analysis</text>
+    <text x="587" y="98" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(160,90,6);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px">SAST
+      · JS · on: pull_request</text>
+  </g>
+
+  <!-- npm audit (amber) -->
+  <g>
+    <rect x="490" y="130" width="194" height="46" rx="8" fill="rgb(255,240,210)"
+      stroke="rgb(200,120,10)" stroke-width="1" />
+    <text x="587" y="148" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(110,58,0);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;font-weight:600">npm
+      audit</text>
+    <text x="587" y="166" text-anchor="middle" dominant-baseline="central"
+      style="fill:rgb(160,90,6);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px">on:
+      schedule · every Monday 9:00 AM</text>
+  </g>
+
+  <!-- Dashed connectors -->
+  <line x1="469" y1="89" x2="488" y2="85" stroke="rgb(160,158,150)" stroke-width="0.5"
+    stroke-dasharray="3 3" />
+  <line x1="469" y1="159" x2="488" y2="155" stroke="rgb(160,158,150)" stroke-width="0.5"
+    stroke-dasharray="3 3" />
+
+  <!-- ══════════════ LEGEND ══════════════ -->
+  <rect x="30" y="626" width="12" height="12" rx="2" fill="rgb(20,140,90)" />
+  <text x="48" y="632" dominant-baseline="central"
+    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px">Phase
+    1 · CI checks</text>
+
+  <rect x="192" y="626" width="12" height="12" rx="2" fill="rgb(90,78,200)" />
+  <text x="210" y="632" dominant-baseline="central"
+    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px">Phase
+    2 · Docker &amp; registry</text>
+
+  <rect x="390" y="626" width="12" height="12" rx="2" fill="rgb(185,118,22)" />
+  <text x="408" y="632" dominant-baseline="central"
+    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px">Security
+    gates</text>
+
+  <rect x="30" y="648" width="12" height="12" rx="2" fill="rgb(38,120,210)" />
+  <text x="48" y="654" dominant-baseline="central"
+    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px">Phase
+    3 · Staging env</text>
+
+  <rect x="210" y="648" width="12" height="12" rx="2" fill="rgb(195,80,45)" />
+  <text x="228" y="654" dominant-baseline="central"
+    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px">Phase
+    3 · Production env</text>
+
+  <rect x="395" y="648" width="12" height="12" rx="2" fill="rgb(130,128,122)" />
+  <text x="413" y="654" dominant-baseline="central"
+    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px">Gate
+    / tag step</text>
+
+  <rect x="512" y="648" width="12" height="12" rx="2" fill="rgb(120,55,195)" />
+  <text x="530" y="654" dominant-baseline="central"
+    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px">
+    Alerting</text>
 </svg>

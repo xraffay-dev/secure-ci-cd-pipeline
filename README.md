@@ -14,7 +14,7 @@ This project is a hands-on demonstration of how to wrap any application in a bat
 
 ## 🏗️ Pipeline Architecture
 
-![CI/CD Architecture Diagram](docs/cicd-architecture.svg)
+![CI/CD Architecture Diagram](docs/cicd-architecture-transparent.svg)
 
 ---
 
@@ -64,7 +64,7 @@ strategy:
 
 ### 2. `docker.yml` — Container Build & Security Gate
 
-**Trigger:** `workflow_dispatch`
+**Trigger:** `push` to `main`, `pull_request` to `main` — (`workflow_dispatch` retained for manual testing only)
 
 **Permissions:** `contents: read`, `packages: write` — principle of least privilege to GHCR.
 
