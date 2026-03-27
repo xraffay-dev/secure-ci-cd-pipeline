@@ -14,7 +14,7 @@ This project is a hands-on demonstration of how to wrap any application in a bat
 
 ## 🏗️ Pipeline Architecture
 
-![CI/CD Architecture Diagram](docs/cicd-architecture-transparent.svg)
+![CI/CD Architecture Diagram](docs/cicd-architecture.svg)
 
 ---
 
