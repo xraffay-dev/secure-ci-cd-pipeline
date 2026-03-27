@@ -40,7 +40,8 @@
 
   <!-- ── SECURITY COLUMN HEADER ── -->
   <text x="584" y="50" text-anchor="middle"
-    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px">Security gates</text>
+    style="fill:rgb(80,78,70);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px">Security
+    gates</text>
 
   <!-- ══════════════ MAIN FLOW ══════════════ -->
 

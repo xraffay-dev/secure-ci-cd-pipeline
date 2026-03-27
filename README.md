@@ -6,7 +6,7 @@
 
 ## 📌 What This Project Is Actually About
 
-The application itself — *HotTakes*, a developer opinion voting board — is intentionally simple and AI-generated. **It exists purely as a deployment target.** The real work here lives in `.github/workflows/`.
+The application itself — _HotTakes_, a developer opinion voting board — is intentionally simple and AI-generated. **It exists purely as a deployment target.** The real work here lives in `.github/workflows/`.
 
 This project is a hands-on demonstration of how to wrap any application in a battle-hardened DevSecOps pipeline using nothing but GitHub Actions, Docker, and open-source security tooling.
 
@@ -14,7 +14,7 @@ This project is a hands-on demonstration of how to wrap any application in a bat
 
 ## 🏗️ Pipeline Architecture
 
-![CI/CD Architecture Diagram](docs/architecture-diagram.svg)
+![CI/CD Architecture Diagram](docs/architecture-diagram-transparent.svg)
 
 ---
 
@@ -48,9 +48,9 @@ strategy:
     node-version: [18, 22]
 ```
 
-| Job | What it does |
-| --- | --- |
-| `backend-test` | Sparse-checks out `backend/` only, installs deps, runs `npm test` (Jest + Supertest) on Node 18 **and** Node 22 simultaneously |
+| Job             | What it does                                                                                                                             |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `backend-test`  | Sparse-checks out `backend/` only, installs deps, runs `npm test` (Jest + Supertest) on Node 18 **and** Node 22 simultaneously           |
 | `frontend-test` | Sparse-checks out `frontend/` only, installs deps, runs `npm run lint` (ESLint, zero warnings) on Node 18 **and** Node 22 simultaneously |
 
 **Key design decisions:**
@@ -68,14 +68,14 @@ strategy:
 
 **Permissions:** `contents: read`, `packages: write` — principle of least privilege to GHCR.
 
-| Step | Detail |
-| --- | --- |
-| Build | `docker build` tagged with `github.sha` for immutable traceability |
+| Step           | Detail                                                                                                                                                                                                       |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Build          | `docker build` tagged with `github.sha` for immutable traceability                                                                                                                                           |
 | **Trivy Scan** | `aquasecurity/trivy-action@v0.35.0` — scans the built image for OS + library CVEs at `CRITICAL` and `HIGH` severity. `exit-code: 1` means the pipeline **hard-fails and refuses to push** a vulnerable image |
-| GHCR Login | Token-based login via `secrets.GITHUB_TOKEN` — no static credentials stored |
-| Tag & Push | Pushes both `:<sha>` (immutable, traceable) and `:latest` (canonical) |
+| GHCR Login     | Token-based login via `secrets.GITHUB_TOKEN` — no static credentials stored                                                                                                                                  |
+| Tag & Push     | Pushes both `:<sha>` (immutable, traceable) and `:latest` (canonical)                                                                                                                                        |
 
-**The security gate matters:** Trivy runs *before* the push step. A vulnerable image never reaches the registry. This is the "shift-left" security pattern — catching CVEs at build time, not in production.
+**The security gate matters:** Trivy runs _before_ the push step. A vulnerable image never reaches the registry. This is the "shift-left" security pattern — catching CVEs at build time, not in production.
 
 ---
 
@@ -88,7 +88,7 @@ strategy:
 ```yaml
 actions: read
 contents: read
-security-events: write   # Required to post findings to GitHub Security tab
+security-events: write # Required to post findings to GitHub Security tab
 ```
 
 Uses **GitHub's native CodeQL engine** to perform semantic code analysis on JavaScript — detecting injection flaws, path traversals, prototype pollution, and more. Results surface directly in the PR and in the repository's Security → Code scanning tab.
@@ -127,15 +127,15 @@ This workflow now has **two jobs**:
 deploy ──► notify (only on failure())
 ```
 
-| Job | Condition | What it does |
-| --- | --- | --- |
-| `deploy` | always | POSTs to `secrets.RENDER_PRODUCTION_HOOK` to trigger Render redeploy |
+| Job      | Condition                         | What it does                                                                           |
+| -------- | --------------------------------- | -------------------------------------------------------------------------------------- |
+| `deploy` | always                            | POSTs to `secrets.RENDER_PRODUCTION_HOOK` to trigger Render redeploy                   |
 | `notify` | `needs: deploy` + `if: failure()` | Sends a **Slack alert** via `secrets.SLACK_WEBHOOK_URL` with repo name and failing tag |
 
 **The Slack notification payload:**
 
 ```json
-{"text": "Deploy failed for <repo> on tag <tag>"}
+{ "text": "Deploy failed for <repo> on tag <tag>" }
 ```
 
 **Why this matters:** Silent production deploy failures are dangerous. The `notify` job guarantees that if Render rejects the deploy for any reason, the on-call engineer gets pinged immediately on Slack — without needing to poll GitHub Actions manually.
@@ -182,13 +182,13 @@ Stage 3: runtime (node:20-alpine)  ← Final image
 
 **Security choices made deliberately:**
 
-| Decision | Reason |
-| --- | --- |
-| `node:20-alpine` runtime base | Minimal attack surface — Alpine has far fewer OS packages than `node:20` (Debian) |
-| `npm prune --omit=dev` | Strips all devDependencies — Jest, Supertest, etc. never land in the image |
-| Remove `npm`, `npx`, `corepack` | An attacker with RCE cannot run `npm install` inside the container |
-| `apk upgrade --no-cache` | Patches all Alpine OS packages at build time |
-| Multi-stage build | Build tools (`vite`, compilers) exist only in builder stages, not the final image |
+| Decision                        | Reason                                                                            |
+| ------------------------------- | --------------------------------------------------------------------------------- |
+| `node:20-alpine` runtime base   | Minimal attack surface — Alpine has far fewer OS packages than `node:20` (Debian) |
+| `npm prune --omit=dev`          | Strips all devDependencies — Jest, Supertest, etc. never land in the image        |
+| Remove `npm`, `npx`, `corepack` | An attacker with RCE cannot run `npm install` inside the container                |
+| `apk upgrade --no-cache`        | Patches all Alpine OS packages at build time                                      |
+| Multi-stage build               | Build tools (`vite`, compilers) exist only in builder stages, not the final image |
 
 The single `EXPOSE 8000` and `CMD ["node", "index.js"]` keep the runtime surface minimal and auditable.
 
@@ -198,13 +198,13 @@ The single `EXPOSE 8000` and `CMD ["node", "index.js"]` keep the runtime surface
 
 Backend integration tests use **Jest** and **Supertest**, mounting the Express app directly without spinning up an actual HTTP server. Tests run across a **Node 18 × Node 22 matrix** in CI:
 
-| Test | Validates |
-| --- | --- |
-| `GET /api/takes` | Returns 200, array is sorted descending by votes |
-| `POST /api/takes` | Creates take, returns 201 + correct body |
-| `POST /api/takes` (short text) | Rejects with 400 and error message |
-| `POST /api/takes/:id/upvote` | Increments vote count by exactly 1 |
-| Vote toggle | Upvote → unvote restores exact original count |
+| Test                           | Validates                                        |
+| ------------------------------ | ------------------------------------------------ |
+| `GET /api/takes`               | Returns 200, array is sorted descending by votes |
+| `POST /api/takes`              | Creates take, returns 201 + correct body         |
+| `POST /api/takes` (short text) | Rejects with 400 and error message               |
+| `POST /api/takes/:id/upvote`   | Increments vote count by exactly 1               |
+| Vote toggle                    | Upvote → unvote restores exact original count    |
 
 Tests are validated in CI before any Docker build is triggered, ensuring no broken code ever reaches the container layer.
 
@@ -212,12 +212,12 @@ Tests are validated in CI before any Docker build is triggered, ensuring no brok
 
 ## 🔐 Secrets & Credentials Management
 
-| Secret | Scope | Used In |
-| --- | --- | --- |
-| `GITHUB_TOKEN` | Auto-provisioned by GitHub | GHCR login in `docker.yml`, CodeQL in `codeql.yml` |
-| `RENDER_STAGING_HOOK` | GitHub Environment: `staging` | `deploy-staging.yml` |
-| `RENDER_PRODUCTION_HOOK` | GitHub Environment: `production` | `deploy-production.yml` |
-| `SLACK_WEBHOOK_URL` | Repository secret | `deploy-production.yml` — failure alert |
+| Secret                   | Scope                            | Used In                                            |
+| ------------------------ | -------------------------------- | -------------------------------------------------- |
+| `GITHUB_TOKEN`           | Auto-provisioned by GitHub       | GHCR login in `docker.yml`, CodeQL in `codeql.yml` |
+| `RENDER_STAGING_HOOK`    | GitHub Environment: `staging`    | `deploy-staging.yml`                               |
+| `RENDER_PRODUCTION_HOOK` | GitHub Environment: `production` | `deploy-production.yml`                            |
+| `SLACK_WEBHOOK_URL`      | Repository secret                | `deploy-production.yml` — failure alert            |
 
 **Zero static credentials** are stored anywhere in the repository. GitHub's OIDC token handles registry authentication. Environment-scoped secrets ensure production credentials are never accessible to staging jobs.
 
@@ -256,21 +256,21 @@ secure-ci-cd-pipeline/
 
 ## ⚙️ Tech Stack
 
-| Layer | Technology |
-| --- | --- |
-| **CI/CD** | GitHub Actions |
-| **Reusable Workflows** | `workflow_call` — shared test logic across workflows |
-| **Matrix Testing** | Node.js 18 + 22 tested in parallel |
-| **Container Registry** | GitHub Container Registry (GHCR) |
-| **Container Security** | Trivy (`aquasecurity/trivy-action`) |
-| **SAST** | GitHub CodeQL |
-| **Dependency Auditing** | `npm audit` |
-| **Containerization** | Docker (multi-stage build) |
-| **Hosting / CD Target** | Render (webhook-triggered deploys) |
-| **Alerting** | Slack (Incoming Webhooks — production failure notifications) |
-| **Backend** | Node.js 20 + Express 4 |
-| **Frontend** | React 18 + Vite 8 |
-| **Testing** | Jest + Supertest |
+| Layer                   | Technology                                                   |
+| ----------------------- | ------------------------------------------------------------ |
+| **CI/CD**               | GitHub Actions                                               |
+| **Reusable Workflows**  | `workflow_call` — shared test logic across workflows         |
+| **Matrix Testing**      | Node.js 18 + 22 tested in parallel                           |
+| **Container Registry**  | GitHub Container Registry (GHCR)                             |
+| **Container Security**  | Trivy (`aquasecurity/trivy-action`)                          |
+| **SAST**                | GitHub CodeQL                                                |
+| **Dependency Auditing** | `npm audit`                                                  |
+| **Containerization**    | Docker (multi-stage build)                                   |
+| **Hosting / CD Target** | Render (webhook-triggered deploys)                           |
+| **Alerting**            | Slack (Incoming Webhooks — production failure notifications) |
+| **Backend**             | Node.js 20 + Express 4                                       |
+| **Frontend**            | React 18 + Vite 8                                            |
+| **Testing**             | Jest + Supertest                                             |
 
 ---
 
