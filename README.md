@@ -10,11 +10,17 @@ The application itself — _HotTakes_, a developer opinion voting board — is i
 
 This project is a hands-on demonstration of how to wrap any application in a battle-hardened DevSecOps pipeline using nothing but GitHub Actions, Docker, and open-source security tooling.
 
+> 🎥 Demo: [secure-ci-cd-demo.mp4](docs/secure-ci-cd-demo.mp4)
+
 ---
 
 ## 🏗️ Pipeline Architecture
 
 ![CI/CD Architecture Diagram](docs/architecture-diagram-transparent.svg)
+
+## 🎥 Demo Video
+
+[Watch secure-ci-cd-demo.mp4](docs/secure-ci-cd-demo.mp4)
 
 ---
 
@@ -71,11 +77,11 @@ strategy:
 | Step           | Detail                                                                                                                                                                                                       |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Build          | `docker build` tagged with `github.sha` for immutable traceability                                                                                                                                           |
-| **Trivy Scan** | `aquasecurity/trivy-action@v0.35.0` — scans the built image for OS + library CVEs at `CRITICAL` and `HIGH` severity. `exit-code: 1` means the pipeline **hard-fails and refuses to push** a vulnerable image |
+| **Trivy Scan** | `aquasecurity/trivy-action@v0.35.0` — scans the built image for OS + library CVEs at `CRITICAL` and `HIGH` severity. Findings are always reported in logs while the workflow continues (`exit-code: 0`). |
 | GHCR Login     | Token-based login via `secrets.GITHUB_TOKEN` — no static credentials stored                                                                                                                                  |
 | Tag & Push     | Pushes both `:<sha>` (immutable, traceable) and `:latest` (canonical)                                                                                                                                        |
 
-**The security gate matters:** Trivy runs _before_ the push step. A vulnerable image never reaches the registry. This is the "shift-left" security pattern — catching CVEs at build time, not in production.
+**Why this still matters:** Trivy runs _before_ the push step and provides immediate visibility into image risk at build time. This supports the "shift-left" security pattern — catching CVEs early, not in production.
 
 ---
 
@@ -167,13 +173,13 @@ cat *-audit-results.txt >> $GITHUB_STEP_SUMMARY
 The Dockerfile uses a **3-stage multi-stage build** to produce a minimal, hardened runtime image:
 
 ```text
-Stage 1: frontend-build (node:20-alpine)
+Stage 1: frontend-build (node:22-alpine)
   └── npm ci + vite build → produces /dist
 
-Stage 2: server-build (node:20)
+Stage 2: server-build (node:22)
   └── npm ci + npm prune --omit=dev → production-only node_modules
 
-Stage 3: runtime (node:20-alpine)  ← Final image
+Stage 3: runtime (node:22-alpine)  ← Final image
   ├── apk upgrade (OS patches)
   ├── npm + npx + corepack REMOVED from image
   ├── COPY from server-build (node_modules + index.js)
@@ -184,7 +190,7 @@ Stage 3: runtime (node:20-alpine)  ← Final image
 
 | Decision                        | Reason                                                                            |
 | ------------------------------- | --------------------------------------------------------------------------------- |
-| `node:20-alpine` runtime base   | Minimal attack surface — Alpine has far fewer OS packages than `node:20` (Debian) |
+| `node:22-alpine` runtime base   | Minimal attack surface — Alpine has far fewer OS packages than `node:22` (Debian) |
 | `npm prune --omit=dev`          | Strips all devDependencies — Jest, Supertest, etc. never land in the image        |
 | Remove `npm`, `npx`, `corepack` | An attacker with RCE cannot run `npm install` inside the container                |
 | `apk upgrade --no-cache`        | Patches all Alpine OS packages at build time                                      |
@@ -268,7 +274,7 @@ secure-ci-cd-pipeline/
 | **Containerization**    | Docker (multi-stage build)                                   |
 | **Hosting / CD Target** | Render (webhook-triggered deploys)                           |
 | **Alerting**            | Slack (Incoming Webhooks — production failure notifications) |
-| **Backend**             | Node.js 20 + Express 4                                       |
+| **Backend**             | Node.js 22 + Express 4                                       |
 | **Frontend**            | React 18 + Vite 8                                            |
 | **Testing**             | Jest + Supertest                                             |
 
@@ -285,7 +291,7 @@ secure-ci-cd-pipeline/
 - **Scheduled Proactive Scanning** — CVE discovery doesn't wait for a code change
 - **Sparse Checkout** — minimise clone scope per job for faster, resource-efficient runners
 - **Dependency Caching** — `actions/cache@v4` keyed on lock file hash for deterministic cache invalidation
-- **Hard Security Gates** — `exit-code: 1` on Trivy means the registry only ever receives clean images
+- **Container Risk Visibility** — Trivy scans every image build and reports `HIGH/CRITICAL` findings directly in workflow logs
 - **SAST via Data-Flow Analysis** — CodeQL understands taint tracking, not just pattern matching
 - **Tag-Based Production Promotion** — Git tags as the release mechanism removes accidental deploys
 - **Failure Alerting** — Slack webhook on production deploy failure; no silent outages

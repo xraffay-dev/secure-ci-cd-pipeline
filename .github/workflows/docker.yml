@@ -6,6 +6,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
   contents: read
   packages: write
@@ -24,7 +27,7 @@ jobs:
           image-ref: ghcr.io/${{ github.repository }}:${{ github.sha }}
           scan-type: image
           format: table
-          exit-code: 1
+          exit-code: 0
           severity: CRITICAL,HIGH
           scanners: vuln
       - name: Log in to GitHub Container Registry

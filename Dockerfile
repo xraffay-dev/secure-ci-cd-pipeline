@@ -1,18 +1,18 @@
-FROM node:20-alpine AS frontend-build
+FROM node:22-alpine AS frontend-build
 WORKDIR /app/frontend
 COPY frontend/package*.json ./
 RUN npm ci
 COPY frontend/ ./
 RUN npm run build
 
-FROM node:20 AS server-build
+FROM node:22 AS server-build
 WORKDIR /app/backend
 COPY ./backend/package*.json ./
 RUN npm ci
 COPY ./backend .
 RUN npm prune --omit=dev
 
-FROM node:20-alpine AS runtime
+FROM node:22-alpine AS runtime
 WORKDIR /app
 RUN apk upgrade --no-cache \
 	&& rm -rf /usr/local/lib/node_modules/npm \
